@@ -3,32 +3,74 @@
 
 <head>
 
-  <title>Your Tour</title>
+  <title>Todo list</title>
   <meta name="viewport" content="width=device-width">
   <meta name="description"
     content="Купить тур из Москвы в египет и другие страны. Низкие цены на путевки на все направления.Идеальные путешествия существуют." />
   <meta name="keywords" content="купить тур,путешествия,низкие цены, большой выбор напралений,выбери свой тур">
 
- <!--  <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png">
-  <link rel="manifest" href="img/site.webmanifest">
-  <link rel="mask-icon" href="img/safari-pinned-tab.svg" color="#5bbad5"> -->
+  <link rel="apple-touch-icon" sizes="180x180" href="img/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="img/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="img/favicon/favicon-16x16.png">
+  <link rel="manifest" href="img/favicon/site.webmanifest">
+  <link rel="mask-icon" href="img/favicon/safari-pinned-tab.svg" color="#5bbad5">
   <meta name="msapplication-TileColor" content="#da532c">
   <meta name="theme-color" content="#ffffff">
-
   <meta charset="utf-8">
-<!--   <link rel="stylesheet" href="main_page.css">
+  <link rel="stylesheet" href="css/main_page.css">
   <link rel="stylesheet" href="viewpoint_1024.css">
-  <link rel="stylesheet" href="viewpoint_360.css"> -->
-
+  <link rel="stylesheet" href="viewpoint_360.css">
 
 </head>
-<body>
-    <p>
-
-qweq
-
+<body >
+<main class="flex">
+  <aside>
+    <h1 class="aside__title">JavaScript</h1>
+    <p class="aside__subtitle">Vanilla JavaScript Example
+      <a href="https://github.com/monsegard/monsegard1.github.io" class="link">Source</a>
     </p>
-    <h1>qwezs</h1>
+    <hr class="aside__hr">
+
+  <blockquote class="quote speech-bubble">
+    <p class="quote__p italic">«Если часто увлекаться, в JavaScript можно потеряться»... 
+      Первое правило бизнеса – никогда не продавать то, что ты любишь. 
+      Иначе ты, с тем же успехом, можешь продать JavaScript. Кто рано встает – JavaScript достает. 
+      Абсолютно белого (или абсолютно чёрного) JavaScript не бывает. JavaScript старается давно. 
+      Но то ли рынок оказался не готов к этой услуге, то ли администрация не смогла развить идею.
+    </p>
+  </blockquote>
+  <div style="text-align: right">
+  <a href="http://www.gatchina.biz/generator" class="link" >Генератор светских бесед</a>
+  </div>
+    <hr class="aside__hr">
+    <p class="aside_p italic">
+      If you have other helpful links to share, or find any of the links above no longer work, please let us know.
+    </p>
+  </aside>
+  <section>
+    <header>  <h1 class="title">todos</h1></header>
+
+    <div class="todoapp">
+      <input id="textInput" class="new-todo"placeholder="What needs to be done?" autofocus="" >
+    <div>
+      <ul id ="list" class="list">
+        <li id="parentLi"></li>
+        </ul>
+      </div>
+      <footer>
+        <strong class ="strong"></strong>
+        <input type="button" class="todoapp__btn" value="delete all" style="display: none;">
+      </footer>
+    </div>
+
+    <footer class="info">
+      <p>Double-click to edit a todo</p>
+      <p>Created by Oscar Godson</p>
+      <p>Refactored by Christoph Burgmer</p>
+      <p>Part of TodoMVC</p>
+    </footer>
+      </section>
+</main>
+
+<script src="js/main.js"></script>
 </body>
