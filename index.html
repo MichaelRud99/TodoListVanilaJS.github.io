@@ -18,8 +18,6 @@
   <meta name="theme-color" content="#ffffff">
   <meta charset="utf-8">
   <link rel="stylesheet" href="css/main_page.css">
-  <link rel="stylesheet" href="viewpoint_1024.css">
-  <link rel="stylesheet" href="viewpoint_360.css">
 
 </head>
 <body >
@@ -57,9 +55,14 @@
         <li id="parentLi"></li>
         </ul>
       </div>
-      <footer>
+      <footer class="flex todoapp__footer">
         <strong class ="strong"></strong>
-        <input type="button" class="todoapp__btn" value="delete all" style="display: none;">
+        <div>
+        <input type="button" class="todoapp__btn" value="All" style="display: none;" autofocus>
+        <input type="button" class="todoapp__btn" value="Active" style="display: none;">
+        <input type="button" class="todoapp__btn" value="Completed" style="display: none;">
+        </div>
+        <input type="button" id="clear_completed" class="todoapp__btn" value="clear completed" style="display: none;">
       </footer>
     </div>
 

@@ -3,9 +3,14 @@ var ul = document.getElementById("list");
 var todoList = [];
 var count = 0;
 var countDone = 0;
-let answer =false;
-console.log(answer);
-/* by loadout */
+
+/*
+почему индексы берём через (label.length-1)-key
+так как мы создаём элементы и вставляем их в начало, то получаем, то получаем инвертированный список, то есть первый элемент внизу, но позиция у него 0 
+(поэтому мы от длины и отменяем один)
+длина всегда больше текущего индекса.
+*/
+
 var a=localStorage.getItem("todo");
 if ( a!= undefined) {
   todoList = JSON.parse(localStorage.getItem('todo'));
@@ -13,12 +18,33 @@ if ( a!= undefined) {
     out = todoList[key].todo;
     patternList(out);
   }
+  var label =document.querySelectorAll(".list__label");
+  //console.log(label);
+  for (var key in todoList) {
+    var check =todoList[key].check
+    //console.log(out.length);
+    if(check === true){
+     console.log(label[(label.length-1)-key]);
+      if(clear_completed.addEventListener('click',btnClearAll)){}
+     label[(label.length-1)-key].classList.add("list__label_mod");
+    }
+    //console.log(out);
+  }
   var getLenTodoList = localStorage.getItem("lenTodolist");
   countItemsDone(todoList.length,getLenTodoList);
   countItems();
-}else{
-  /* http://old.code.mu/books/javascript/dom/prodvinutaya-rabota-s-sobytiyami-v-javascript.html */
+  footerBtn();
 }
+
+function footerBtn(){
+  var btn = document.querySelectorAll(".todoapp__btn");
+  console.log(btn);
+  for(var i=0; i<btn.length; i++)btn[i].style.display="inline";
+}
+
+
+
+enterKey()
 
 function enterKey(){
 document.addEventListener('keydown', function(event){
@@ -35,9 +61,11 @@ document.addEventListener('keydown', function(event){
     localStorage.setItem('todo', JSON.stringify(todoList));
     localStorage.setItem('lenTodolist', lenTodoList+1);
     countItems();
+    //deleteAll();
   }
 });
 }
+
 
 /* function output(todoList) {
   var out = '';
@@ -59,7 +87,7 @@ function patternList(out) {
   /* checkbox.value="answer"; */
   checkbox.classList.add("list__checkbox")
   label.classList.add("list__label");
-  checkbox.setAttribute('id', 'cont');
+  checkbox.setAttribute('id', 'count');
   hr.classList.add("section__hr");
   label.appendChild(document.createTextNode(out));
   parentLi.insertBefore(li, firstLi );
@@ -74,26 +102,34 @@ function countItems(){
   document.querySelector(".strong").innerHTML = getLenTodoList + ' item left';
 }
 
-function countItemsDone(todoList,getLenTodoList) {
+function countItemsDone(getLenTodoList) {
   /*   var getLenTodoList = localStorage.getItem("lenTodolist"); */
     var clickCheckbox = document.querySelectorAll(".list__checkbox");
     var label = document.querySelectorAll(".list__label");
-  
-    for (let j = 0; j < clickCheckbox.length; j++) {
+    var todoList = JSON.parse(localStorage.getItem('todo'));
+    //console.log(todoList);
+    var lenClickCheckbox = clickCheckbox.length;
+    for (let j = 0; j < lenClickCheckbox; j++) {
       clickCheckbox[j].addEventListener('click', function () {
       /*   console.log(todoList); */
         if (label[j].classList.contains('list__label_mod')) {
           countDone--;
           getLenTodoList = label.length - countDone;
+          todoList[(lenClickCheckbox-1)-j].check=false;
+          localStorage.setItem('todo', JSON.stringify(todoList));
         } else {
           countDone++;
           getLenTodoList = label.length - countDone;
+          todoList[(lenClickCheckbox-1)-j].check=true;
+          localStorage.setItem('todo', JSON.stringify(todoList));
+
         }
         document.querySelector(".strong").innerHTML = getLenTodoList + ' item left';
         label[j].classList.toggle("list__label_mod");
       });
     }
   }
+
 
 function deleteAll() {
   var li = document.querySelectorAll("li");
@@ -112,4 +148,26 @@ function deleteAll() {
     });
   }
 }
+
+ function tmp () {
+  document.getElementById("count").focus();
+};
+
+function btnClearAll(){
+var li = document.querySelectorAll("li");
+todoList = JSON.parse(localStorage.getItem('todo'));
+console.log(todoList);
+for(var key in todoList){
+var check =todoList[key].check;
+  if(check === true){
+    var v = (todoList.length)-key;
+    delete todoList[v]
+    li[v].remove();
+  }
+}
+console.log(todoList);
+//localStorage.setItem('todo', JSON.stringify(todoList));
+}
+
+
 
