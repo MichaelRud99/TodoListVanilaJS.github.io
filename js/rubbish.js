@@ -50,11 +50,7 @@ function main() {
   countItemsDone(label);
   editList(label);
   destroyOneLi(todoList);
-  for (var i = 0; i < lenTodoList; i++) {
-    if (todoList[i]["check"] === true) {
-      addListMod(label, span, i);
-    }
-  }
+  for (var i = 0; i < lenTodoList; i++) {if (todoList[i]["check"] === true) { addListMod(label, span, i); }}
 
   for (let i = 0; i < 3; i++) { btn[i].style.display = "inline"; }
   if (todoList.length === 0) {
@@ -119,7 +115,7 @@ function editMade(input, i) {
   newLabel.appendChild(edit);
   label[i].replaceWith(newLabel);
 
-  /*  window.setTimeout(addTodo, 1000); */
+ /*  window.setTimeout(addTodo, 1000); */
   window.location.reload();
 }
 
@@ -236,6 +232,16 @@ function countItemsDone(label) {
 
 }
 
+function visibilityClearCompleted() {
+
+  if (localStorage.getItem("countDone", countDone) > 0) {
+    btn[3].style.visibility = "visible";
+  }
+  else {
+    btn[3].style.visibility = "hidden";
+  }
+}
+
 function createCompletedStorage() {
   todoList = JSON.parse(localStorage.getItem('todo'));
   var tmp = {};
@@ -283,8 +289,8 @@ function deleteLi() {
 /* пофиксить */
 
 function destroyOneLi(todoList) {
-  /*   console.log("hi112");
-    console.log(todoList); */
+/*   console.log("hi112");
+  console.log(todoList); */
   var li = convertLi();
   var btn = ul.querySelectorAll(".list__destroy");
   btn = Array.prototype.slice.call(btn);
@@ -292,14 +298,14 @@ function destroyOneLi(todoList) {
     btn[i].addEventListener('click', function () {
       li[i].remove();
       console.log(li[i]);
-      console.log(todoList.length - 1 - i);
+      console.log(todoList.length-1-i);
       /* remove(todoList); */
-      todoList.splice(todoList.length - 1 - i, 1);
+      todoList.splice(todoList.length-1-i, 1);
       localStorage.setItem('todo', JSON.stringify(todoList));
       window.location.reload();
-    });
-  }
-  /* todoList.reverse(); */
+  });
+}
+/* todoList.reverse(); */
 }
 
 function addListMod(label, span, i) {

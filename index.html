@@ -18,6 +18,7 @@
   <meta name="theme-color" content="#ffffff">
   <meta charset="utf-8">
   <link rel="stylesheet" href="css/main_page.css">
+  <link rel="stylesheet" href="css/viewpoint_360.css">
 
 </head>
 <body >
@@ -49,27 +50,28 @@
     <header>  <h1 class="title">todos</h1></header>
 
     <div class="todoapp">
-      <input id="textInput" class="new-todo"placeholder="What needs to be done?" autofocus="" >
-    <div>
-      <ul id ="list" class="list">
-        <li id="parentLi"></li>
-        </ul>
+      <div class="flex todoapp__frame">
+      <input id="select_all" type="checkbox" class="todoapp__select-all" autofocus="" >
+      <label></label>
+      <input id="textInput" class="todoapp_new-todo"placeholder="What needs to be done?" autofocus="" >
       </div>
+      <ul id ="list" class="list">
+        </ul>
       <footer class="flex todoapp__footer">
         <strong class ="strong"></strong>
         <div>
-        <input type="button" class="todoapp__btn" value="All" style="display: none;" autofocus>
-        <input type="button" class="todoapp__btn" value="Active" style="display: none;">
-        <input type="button" class="todoapp__btn" value="Completed" style="display: none;">
+        <input type="button" id="all" class="todoapp__btn todoapp__btn_mod" value="All" style="display: none;" autofocus>
+        <input type="button" id="active" class="todoapp__btn todoapp__btn_mod" value="Active" style="display: none;">
+        <input type="button" id="completed" class="todoapp__btn todoapp__btn_mod" value="Completed" style="display: none;">
         </div>
-        <input type="button" id="clear_completed" class="todoapp__btn" value="clear completed" style="display: none;">
+        <input type="button" id="clear_completed" class="todoapp__btn todoapp__btn_clear-completed" value="clear completed" style="visibility: hidden;">
       </footer>
     </div>
 
     <footer class="info">
       <p>Double-click to edit a todo</p>
       <p>Created by Oscar Godson</p>
-      <p>Refactored by Christoph Burgmer</p>
+      <p>Refactored by Van Burgmer</p>
       <p>Part of TodoMVC</p>
     </footer>
       </section>
