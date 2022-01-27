@@ -271,7 +271,7 @@ section {
     border-bottom: 1px solid #ededed;
 }
 
-.list__li_checkbox{
+.list__li_checkbox {
     position: absolute;
     opacity: 0;
     cursor: pointer;
@@ -294,7 +294,7 @@ section {
     background-position: center center;
 }
 
-.list__span_mod{
+.list__span_mod {
     background-size: 30%;
     background-repeat: no-repeat;
     background-position-x: 50%;
@@ -302,34 +302,28 @@ section {
     background-image: url("../img/badges/Rectangl-36-Stroke.svg");
 }
 
-/* их вообще можно совместить с CSS  ??? */
-/* .list__li input:checked + .list__li_btn::before {
-    background-size: 60%;
-    background-image: url("../img/badges/Rectangl-36-Stroke.svg");
-} */
-
 .todoapp__footer {
     justify-content: space-between;
 }
 
-.edit{
+.edit {
     display: flex;
     margin: auto;
-    margin-left:30px;
+    margin-left: 30px;
     font-weight: 300;
     color: #e6e6e6;
     width: 92.5%;
     height: 22px;
     font-size: 22px;
-    border:1px;
+    border: 1px;
     color: inherit;
     padding: 0px;
     cursor: pointer;
     color: #4d4d4d;
     padding: 5px;
 }
-.edit:focus{
+
+.edit:focus {
     outline: none;
     border: 2px solid bisque;
 }
-

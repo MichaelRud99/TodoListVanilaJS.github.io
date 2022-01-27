@@ -21,61 +21,65 @@
   <link rel="stylesheet" href="css/viewpoint_360.css">
 
 </head>
-<body >
-<main class="flex">
-  <aside>
-    <h1 class="aside__title">JavaScript</h1>
-    <p class="aside__subtitle">Vanilla JavaScript Example
-      <a href="https://github.com/monsegard/monsegard1.github.io" class="link">Source</a>
-    </p>
-    <hr class="aside__hr">
 
-  <blockquote class="quote speech-bubble">
-    <p class="quote__p italic">«Если часто увлекаться, в JavaScript можно потеряться»... 
-      Первое правило бизнеса – никогда не продавать то, что ты любишь. 
-      Иначе ты, с тем же успехом, можешь продать JavaScript. Кто рано встает – JavaScript достает. 
-      Абсолютно белого (или абсолютно чёрного) JavaScript не бывает. JavaScript старается давно. 
-      Но то ли рынок оказался не готов к этой услуге, то ли администрация не смогла развить идею.
-    </p>
-  </blockquote>
-  <div style="text-align: right">
-  <a href="http://www.gatchina.biz/generator" class="link" >Генератор светских бесед</a>
-  </div>
-    <hr class="aside__hr">
-    <p class="aside_p italic">
-      If you have other helpful links to share, or find any of the links above no longer work, please let us know.
-    </p>
-  </aside>
-  <section>
-    <header>  <h1 class="title">todos</h1></header>
+<body>
+  <main class="flex">
+    <aside>
+      <h1 class="aside__title">JavaScript</h1>
+      <p class="aside__subtitle">Vanilla JavaScript Example
+        <a href="https://github.com/monsegard/monsegard1.github.io" class="link">Source</a>
+      </p>
+      <hr class="aside__hr">
 
-    <div class="todoapp">
-      <div class="flex todoapp__frame">
-      <input id="select_all" type="checkbox" class="todoapp__select-all" autofocus="" >
-      <label></label>
-      <input id="textInput" class="todoapp_new-todo"placeholder="What needs to be done?" autofocus="" >
+      <blockquote class="quote speech-bubble">
+        <p class="quote__p italic">«Если часто увлекаться, в JavaScript можно потеряться»...
+          Первое правило бизнеса – никогда не продавать то, что ты любишь.
+          Иначе ты, с тем же успехом, можешь продать JavaScript. Кто рано встает – JavaScript достает.
+          Абсолютно белого (или абсолютно чёрного) JavaScript не бывает. JavaScript старается давно.
+          Но то ли рынок оказался не готов к этой услуге, то ли администрация не смогла развить идею.
+        </p>
+      </blockquote>
+      <div style="text-align: right">
+        <a href="http://www.gatchina.biz/generator" class="link">Генератор светских бесед</a>
       </div>
-      <ul id ="list" class="list">
-        </ul>
-      <footer class="flex todoapp__footer">
-        <strong class ="strong"></strong>
-        <div>
-        <input type="button" id="all" class="todoapp__btn todoapp__btn_mod" value="All" style="display: none;" autofocus>
-        <input type="button" id="active" class="todoapp__btn todoapp__btn_mod" value="Active" style="display: none;">
-        <input type="button" id="completed" class="todoapp__btn todoapp__btn_mod" value="Completed" style="display: none;">
+      <hr class="aside__hr">
+      <p class="aside_p italic">
+        If you have other helpful links to share, or find any of the links above no longer work, please let us know.
+      </p>
+    </aside>
+    <section>
+      <header>
+        <h1 class="title">todos</h1>
+      </header>
+
+      <div class="todoapp">
+        <div class="flex todoapp__frame">
+          <input id="select_all" type="checkbox" class="todoapp__select-all" autofocus="">
+          <label></label>
+          <input id="textInput" class="todoapp_new-todo" placeholder="What needs to be done?" autofocus="">
         </div>
-        <input type="button" id="clear_completed" class="todoapp__btn todoapp__btn_clear-completed" value="clear completed" style="visibility: hidden;">
+        <ul id="list" class="list">
+        </ul>
+        <footer class="flex todoapp__footer">
+          <strong class="strong" value="0" data-counter></strong>
+          <div>
+            <input type="button" id="all" class="todoapp__btn todoapp__btn_mod" value="All" autofocus>
+            <input type="button" id="active" class="todoapp__btn todoapp__btn_mod" value="Active">
+            <input type="button" id="completed" class="todoapp__btn todoapp__btn_mod" value="Completed">
+          </div>
+          <input type="button" id="clear_completed" class="todoapp__btn todoapp__btn_clear-completed"
+            value="clear completed" style="visibility: hidden;">
+        </footer>
+      </div>
+
+      <footer class="info">
+        <p>Double-click to edit a todo</p>
+        <p>Created by Oscar Godson</p>
+        <p>Refactored by Van Burgmer</p>
+        <p>Part of TodoMVC</p>
       </footer>
-    </div>
+    </section>
+  </main>
 
-    <footer class="info">
-      <p>Double-click to edit a todo</p>
-      <p>Created by Oscar Godson</p>
-      <p>Refactored by Van Burgmer</p>
-      <p>Part of TodoMVC</p>
-    </footer>
-      </section>
-</main>
-
-<script src="js/main.js"></script>
+  <script src="js/main.js"></script>
 </body>

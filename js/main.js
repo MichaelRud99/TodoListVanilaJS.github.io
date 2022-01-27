@@ -1,126 +1,154 @@
-/* var body = document.querySelector("body"); */
 var ul = document.querySelector("ul");
 var parentUl = document.querySelector("parentUl");
 var footer = document.querySelector("footer");
 var btn = footer.querySelectorAll("input");
-var countDone = 0;
 var todoList = [];
 var count = 0;
-var c = 0;
+let countDone = 0;
 var allDiv = document.querySelectorAll("div");
 var newTodo = allDiv[2].querySelectorAll("input");
 var innerInput = allDiv[2].querySelector("input");
 var innerLabel = allDiv[2].querySelector("label");
 
-/* localStorage.clear();
-/*
-почему индексы берём через (label.length-1)-key
-так как мы создаём элементы и вставляем их в начало, то получаем, то получаем инвертированный список, то есть первый элемент внизу, но позиция у него 0 
-(поэтому мы от длины и отнимаем один)
-длина всегда больше текущего индекса.
-*/
-
+document.addEventListener('keydown', enterKey);
 if (JSON.parse(localStorage.getItem("todo")) != undefined) {
   var todoList = JSON.parse(localStorage.getItem("todo"));
   outPatternList(todoList);
-  main();
 }
-else {
+
+if (JSON.parse(localStorage.getItem("todo")) === undefined || todoList.length === 0) {
   footer.style.display = "none";
   innerInput.style.display = "none";
   innerLabel.style.display = "none";
 }
 
-document.addEventListener('keydown', enterKey);
+class workList {
+  constructor(elem) {
 
-function addTodo() {
-  var todoList = JSON.parse(localStorage.getItem("todo"));
-  /*   console.log(todoList); */
-  document.addEventListener('keydown', enterKey);
-  window.setTimeout(main, 0);
-}
+    this._elem = elem;
+    elem.onclick = this.onClick.bind(this);
+    chekDoneTodo(todoList);
 
-function main() {
-  /*   console.log("hi"); */
-  var label = convertListLabel();
-  var span = convertListSpan();
-  var lenTodoList = todoList.length;
+  }
 
-  countItems();
-  countItemsDone(label);
-  editList(label);
-  destroyOneLi(todoList);
-  for (var i = 0; i < lenTodoList; i++) {
-    if (todoList[i]["check"] === true) {
-      addListMod(label, span, i);
+  checkbox() {
+    let todoList = JSON.parse(localStorage.getItem("todo"));
+    todoList.reverse();
+
+    let div = event.target.closest("div");
+    let label = div.querySelector("label");
+    let span = div.querySelector("span");
+
+    let inputCount = ul.querySelectorAll("input");
+    inputCount = Array.prototype.slice.call(inputCount)
+    inputCount = inputCount.indexOf(event.target)
+
+    label.classList.toggle("list__label_mod");
+    span.classList.toggle("list__span_mod");
+
+    if (label.classList.contains('list__label_mod')) {
+      countDone++;
+      todoList[inputCount].check = true;
+      todoList.reverse();
+      localStorage.setItem('todo', JSON.stringify(todoList));
+    } else {
+      countDone--;
+      todoList[inputCount].check = false;
+      todoList.reverse();
+      localStorage.setItem('todo', JSON.stringify(todoList));
+    }
+    footer.querySelector(".strong").innerHTML = (todoList.length - countDone) + ' item left';
+  }
+
+  btn() {
+    let todoList = JSON.parse(localStorage.getItem("todo"));
+    todoList.reverse();
+
+    let buttonCount = ul.querySelectorAll("button");
+    buttonCount = Array.prototype.slice.call(buttonCount)
+    buttonCount = buttonCount.indexOf(event.target)
+
+    let li = ul.querySelector("li");
+    li.remove();
+
+    todoList.splice(buttonCount, 1);
+    todoList.reverse();
+    localStorage.setItem('todo', JSON.stringify(todoList));
+
+    if (todoList.length === 0) {
+      footer.style.display = "none";
+      innerInput.style.display = "none";
+      innerLabel.style.display = "none";
     }
   }
 
-  for (let i = 0; i < 3; i++) { btn[i].style.display = "inline"; }
-  if (todoList.length === 0) {
-    footer.style.display = "none";
-    innerInput.style.display = "none";
-    innerLabel.style.display = "none";
-  }
-  /* window.location.reload(); */
-}
-
-function editList(label) {
-
-  for (let i = 0; i < todoList.length; i++) {
-
-    label[i].addEventListener('dblclick', function (e) {
-
-      console.log("click" + i);
-
-      var div = ul.querySelectorAll("div");
-      var li = ul.querySelectorAll("li");
-      var todo = todoList[(todoList.length - 1) - i].todo;
-      var input = document.createElement("input");
-
-      div[i].style.display = "none";
-      input.classList.add("edit");
-      input.type = "text";
-      input.value = todo;
-      li[i].appendChild(input).focus();
-      document.removeEventListener('keydown', enterKey);
-      document.addEventListener("keydown", () => editEnter(input, i, event));
-
-      input.onblur = function () {
-        editMade(input, i)
-      };
-
-    });
-
-  }
-
-}
-function editEnter(input, i, event) {
-  if (event.code == 'Enter') {
-    editMade(input, i);
+  onClick(event) {
+    let action = event.target.dataset.action;
+    if (action) {
+      this[action]();
+      /* window.setTimeout(main, 0); */
+    }
   }
 }
 
-function editMade(input, i) {
-  var label = ul.querySelectorAll("label");
-  var div = ul.querySelectorAll("div");
+new workList(ul);
 
-  var edit = document.createTextNode(input.value);
-  /*  console.log(edit); */
+ul.ondblclick = function (event) {
 
-  todoList[(todoList.length - 1) - i].todo = input.value;
-  localStorage.setItem('todo', JSON.stringify(todoList));
+  let todoList = JSON.parse(localStorage.getItem("todo"));
+  todoList.reverse();
+
+  let label = event.target.closest("label");
+  let labelCount = ul.querySelectorAll("label");
+  labelCount = Array.prototype.slice.call(labelCount)
+  labelCount = labelCount.indexOf(event.target);
+
+  if (labelCount === -1) return;
+
+  let todo = todoList[labelCount].todo;
+  let div = event.target.closest("div");
+
+  editList(label, labelCount, todo, div);
+
+};
+
+function editList(label, labelCount, todo, div) {
+
+  let li = ul.querySelectorAll("li");
+
+  div.style.display = "none";
+
+  let input = document.createElement("input");
+  input.classList.add("edit");
+  input.type = "text";
+  input.value = todo;
+  li[labelCount].appendChild(input).focus();
+
+  document.removeEventListener('keydown', enterKey);
+  document.addEventListener("keydown", () => editEnter(input, label, labelCount, div, event));
+
+  input.onblur = function () {
+    editMade(input, label, labelCount, div);
+  };
+
+}
+
+function editMade(input, label, labelCount, div) {
+
+  todoList.reverse();
+  todoList[labelCount].todo = input.value;
+  localStorage.setItem('todo', JSON.stringify(todoList.reverse()));
 
   input.style.display = "none";
-  div[i].style.display = "flex";
+  div.style.display = "flex";
 
-  var newLabel = document.createElement("label");
-  newLabel.style.width = "100%";
-  newLabel.appendChild(edit);
-  label[i].replaceWith(newLabel);
+  label.innerHTML = input.value;
+}
 
-  /*  window.setTimeout(addTodo, 1000); */
-  window.location.reload();
+function editEnter(input, label, labelCount, div, event) {
+  if (event.code == 'Enter') {
+    editMade(input, label, labelCount, div);
+  }
 }
 
 function enterKey(event) {
@@ -132,27 +160,19 @@ function enterKey(event) {
       text = document.getElementsByTagName("input")[1].value = "";
       var tmp = {};
 
-      if (JSON.parse(localStorage.getItem("todo")) != undefined) {
-        todoList = JSON.parse(localStorage.getItem("todo"));
-      }
-
       tmp.todo = input;
       tmp.check = false;
-      lenTodoList = todoList.length;
-      todoList[lenTodoList] = tmp
+      todoList[todoList.length] = tmp
       localStorage.setItem('todo', JSON.stringify(todoList));
-      localStorage.setItem('lenTodolist', lenTodoList + 1);
 
       footer.style.display = "flex";
       innerInput.style.display = "flex";
       innerLabel.style.display = "inline-block";
 
-      patternList(tmp.todo);
-      countItems();
-    }
+      footer.querySelector(".strong").innerHTML = (todoList.length - countDone) + ' item left';
 
-    window.setTimeout(addTodo, 0);
-    /* window.location.reload(); */
+      patternList(tmp.todo);
+    }
   }
 }
 
@@ -167,12 +187,14 @@ function patternList(out) {
   var btn = document.createElement("button");
   checkbox.type = 'checkbox';
   checkbox.classList.add("list__li_checkbox");
+  checkbox.setAttribute("data-action", "checkbox");
   li.classList.add("list__li")
   div.classList.add("flex");
   div.style.margin = "5px";
   label.style.width = "100%";
   checkbox.setAttribute('id', 'count');
   btn.classList.add("list__destroy");
+  btn.setAttribute("data-action", "btn");
   parentUl.insertBefore(li, firstUl);
   li.appendChild(div);
   div.appendChild(checkbox);
@@ -190,50 +212,17 @@ function outPatternList(todoList) {
   }
 }
 
-function countItems() {
-  var getLenTodoList = localStorage.getItem("lenTodolist");
-  var countDone = localStorage.getItem("counntDone");
-  document.querySelector(".strong").innerHTML = (getLenTodoList - countDone) + ' item left';
-}
-
-function countItemsDone(label) {
-  /*  var todoList =JSON.parse(localStorage.getItem("todo")); */
-  var input = ul.querySelectorAll("#count");
-  input = Array.prototype.slice.call(input);
-  /* var label = convertListLabel(); */
-  /* console.log(todoList); */
-  /*   console.log("todoList +countItemsDone"); */
+function chekDoneTodo(todoList) {
+  var c = 0;
+  var label = convertListLabel();
   var span = convertListSpan();
-  var getLenTodoList = 0;
-  var lenTodoList = todoList.length;
-  /*   console.log(todoList); */
-
-  for (let i = 0; i < lenTodoList; i++) {
-    /*       console.log(input[i]);
-          console.log(label[i]); */
-    input[i].addEventListener('click', function () {
-      console.log("click" + i);
-
-      if (label[i].classList.contains('list__label_mod')) {
-        console.log(countDone--);
-        getLenTodoList = label.length - countDone;
-        todoList[lenTodoList - 1 - i].check = false;
-        localStorage.setItem('todo', JSON.stringify(todoList));
-      } else {
-        console.log(countDone++);
-        getLenTodoList = label.length - countDone;
-        todoList[lenTodoList - 1 - i].check = true;
-        localStorage.setItem('todo', JSON.stringify(todoList));
-      }
-
-      footer.querySelector(".strong").innerHTML = getLenTodoList + ' item left';
-      label[i].classList.toggle("list__label_mod");
-      span[i].classList.toggle("list__span_mod");
-      localStorage.setItem("countDone", Math.abs(countDone));
-    });
-
+  for (var i = 0; i < todoList.length; i++) {
+    if (todoList[i].check === true) {
+      addListMod(label, span, i)
+      c++
+    }
   }
-
+  footer.querySelector(".strong").innerHTML = (todoList.length - c) + ' item left';
 }
 
 function createCompletedStorage() {
@@ -245,13 +234,10 @@ function createCompletedStorage() {
       tmp = todoList[btnKey];
       compl[compl.length] = tmp;
       btnKey++;
-      /*       todoList.splice(btnKey, 1); */
     } else { btnKey++; }
   }
-  /*   localStorage.setItem("todo", JSON.stringify(todoList)); */
 
   localStorage.setItem("completed", JSON.stringify(compl));
-  /*   return todoList; */
 }
 
 function convertListLabel() {
@@ -278,28 +264,6 @@ function deleteLi() {
   for (var i = 0; i < len; i++) {
     li.shift().remove();
   }
-}
-
-/* пофиксить */
-
-function destroyOneLi(todoList) {
-  /*   console.log("hi112");
-    console.log(todoList); */
-  var li = convertLi();
-  var btn = ul.querySelectorAll(".list__destroy");
-  btn = Array.prototype.slice.call(btn);
-  for (let i = 0; i < todoList.length; i++) {
-    btn[i].addEventListener('click', function () {
-      li[i].remove();
-      console.log(li[i]);
-      console.log(todoList.length - 1 - i);
-      /* remove(todoList); */
-      todoList.splice(todoList.length - 1 - i, 1);
-      localStorage.setItem('todo', JSON.stringify(todoList));
-      window.location.reload();
-    });
-  }
-  /* todoList.reverse(); */
 }
 
 function addListMod(label, span, i) {
@@ -343,6 +307,7 @@ function selectAll() {
 
 select_all.onclick = function () {
   selectAll();
+
 }
 
 all.onclick = function () {
@@ -367,10 +332,8 @@ all.onclick = function () {
 active.onclick = function () {
   deleteLi();
   outPatternList(todoList);
-  /*   var lenTodoList=localStorage.getItem("lenTodoList");
-    var countDone=localStorage.getItem("countDone"); */
-  /*   var label = convertListLabel();
-    var span = convertListSpan(); */
+  createCompletedStorage();
+
   var li = convertLi();
   var lenLi = li.length;
   for (var i = 0; i < todoList.length; i++) {

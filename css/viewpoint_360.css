@@ -1,20 +1,25 @@
 @media (max-width:1000px) {
-    body{
+    body {
         margin: 0%;
     }
-aside{
-    display: none;
-}
-.title{
-    text-align: center;
-}
-.todoapp{
-    width: 360px;
-}
-.strong{
-    margin: 5px 0px;
-}
-.todoapp__btn{
-    margin: 3px 0px;
-}
+
+    aside {
+        display: none;
+    }
+
+    .title {
+        text-align: center;
+    }
+
+    .todoapp {
+        width: 360px;
+    }
+
+    .strong {
+        margin: 5px 0px;
+    }
+
+    .todoapp__btn {
+        margin: 3px 0px;
+    }
 }
