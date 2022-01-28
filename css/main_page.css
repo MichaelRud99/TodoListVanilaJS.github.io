@@ -164,7 +164,8 @@ section {
 }
 
 .todoapp__select-all:checked+label {
-    background-image: url("../img/badges/Rectangle-34-180.svg");
+    
+    background-image: url("../img/badges/Rectangle-34-nw.svg");
 }
 
 .todoapp_new-todo {
