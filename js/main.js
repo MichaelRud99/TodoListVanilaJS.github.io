@@ -22,10 +22,9 @@ if (JSON.parse(localStorage.getItem("todo")) === undefined || todoList.length ==
 }
 
 class workList {
-  constructor(elem, todos) {
+  constructor(elem) {
 
     this._elem = elem;
-    this._todos = todos;
     elem.onclick = this.onClick.bind(this);
     outPatternList(todoList);
     chekDoneTodo(todoList);
@@ -169,7 +168,6 @@ function enterKey(event) {
       var input = text.value;
       text = document.getElementsByTagName("input")[1].value = "";
       var tmp = {};
- /*      console.log(todoList); */
       tmp.todo = input;
       tmp.check = false;
       todoList[todoList.length] = tmp
@@ -239,9 +237,9 @@ function chekDoneTodo(todoList) {
 }
 
 function createCompletedStorage() {
-  todoList = JSON.parse(localStorage.getItem('todo'));
   var tmp = {};
   var compl = [];
+
   for (let btnKey = 0; btnKey < todoList.length;) {
     if (todoList[btnKey].check === true) {
       tmp = todoList[btnKey];
@@ -289,32 +287,31 @@ function removeListMod(label, span, i) {
   span[(label.length - 1) - i].classList.remove("list__span_mod");
 }
 
-/* стрелочка для выделения всех элементов */
 function selectAll() {
   var label = convertListLabel();
   var span = convertListSpan();
-  /*   var todoList = JSON.parse(localStorage.getItem("todo")); */
   var lenLabel = label.length;
 
   if (count % 2 === 0) {
-    btn[3].style.visibility = "visible";
     count++;
+    btn[3].style.visibility = "visible";
     for (var i = 0; i < lenLabel; i++) {
       todoList[(lenLabel - 1) - i].check = true;
       localStorage.setItem('todo', JSON.stringify(todoList));
       addListMod(label, span, i);
     }
+    footer.querySelector(".strong").innerHTML = "0 item left";
 
   } else {
-    btn[3].style.visibility = "hidden";
     count++;
+    btn[3].style.visibility = "hidden";
     for (var i = 0; i < lenLabel; i++) {
       removeListMod(label, span, i);
       todoList[(lenLabel - 1) - i].check = false;
       localStorage.setItem('todo', JSON.stringify(todoList));
       removeListMod(label, span, i);
     }
-
+    footer.querySelector(".strong").innerHTML = todoList.length + " item left";
   }
 }
 
@@ -324,12 +321,12 @@ select_all.onclick = function () {
 }
 
 all.onclick = function () {
-  /*  var todoList = JSON.parse(localStorage.getItem("todo")); */
   deleteLi();
-  console.log(todoList);
   outPatternList(todoList);
+
   var label = convertListLabel();
   var span = convertListSpan();
+
   for (var i = 0; i < todoList.length; i++) {
     if (todoList[i]["check"] === true) {
       addListMod(label, span, i);
@@ -349,6 +346,7 @@ active.onclick = function () {
 
   var li = convertLi();
   var lenLi = li.length;
+
   for (var i = 0; i < todoList.length; i++) {
     if (todoList[i]["check"] === true) {
       li[(lenLi - 1) - i].remove();
@@ -357,18 +355,21 @@ active.onclick = function () {
     select_all.onclick = function () {
       deleteLi();
       if (count % 2 === 0) {
+        btn[3].style.visibility = "hidden";
+        count++;
+        for (var i = 0; i < todoList.length; i++) { todoList[(lenLi - 1) - i].check = false; }
+        outPatternList(todoList);
+        localStorage.setItem('todo', JSON.stringify(todoList));
+        footer.querySelector(".strong").innerHTML = todoList.length + " item left";
+      } else {
         btn[3].style.visibility = "visible";
         for (var i = 0; i < todoList.length; i++) {
           todoList[(lenLi - 1) - i].check = true;
         }
         count++;
         localStorage.setItem('todo', JSON.stringify(todoList));
-      } else {
-        btn[3].style.visibility = "hidden";
-        count++;
-        for (var i = 0; i < todoList.length; i++) { todoList[(lenLi - 1) - i].check = false; }
-        outPatternList(todoList);
-        localStorage.setItem('todo', JSON.stringify(todoList));
+
+        footer.querySelector(".strong").innerHTML = "0 item left";
       }
     }
 
@@ -382,6 +383,7 @@ completed.onclick = function () {
   outPatternList(completed);
   var label = convertListLabel();
   var span = convertListSpan();
+
   for (var i = 0; i < label.length; i++) {
     addListMod(label, span, i);
   }
@@ -399,20 +401,22 @@ completed.onclick = function () {
       }
       count++;
       localStorage.setItem('todo', JSON.stringify(todoList));
+      footer.querySelector(".strong").innerHTML = "0 item left";
     } else {
       btn[3].style.visibility = "hidden";
       count++;
       deleteLi();
       for (var i = 0; i < label.length; i++) { todoList[(todoList.length - 1) - i].check = false; }
       localStorage.setItem('todo', JSON.stringify(todoList));
+      footer.querySelector(".strong").innerHTML = todoList.length + " item left";
     }
   }
 
 }
 
 clear_completed.onclick = function () {
-  createCompletedStorage();
   var lenTodoList = todoList.length;
+
   for (var i = 0; i < lenTodoList; i++) {
     if (todoList[(lenTodoList - 1) - i].check === true) {
       todoList.splice((lenTodoList - 1) - i, 1);
