@@ -29,6 +29,7 @@ body {
 aside {
     background-color: white;
     width: 292px;
+    height: 45  0px;
     padding: 10px;
     border-radius: 5px;
     transition-property: left;
