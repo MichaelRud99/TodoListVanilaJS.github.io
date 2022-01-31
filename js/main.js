@@ -6,7 +6,6 @@ var todoList = [];
 var count = 0;
 let countDone = 0;
 var allDiv = document.querySelectorAll("div");
-var newTodo = allDiv[2].querySelectorAll("input");
 var innerInput = allDiv[2].querySelector("input");
 var innerLabel = allDiv[2].querySelector("label");
 
