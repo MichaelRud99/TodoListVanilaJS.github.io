@@ -299,6 +299,7 @@ section {
     background-repeat: no-repeat;
     background-position-x: 50%;
     background-position-y: 25%;
+    margin-bottom: auto;
     background-image: url("../img/badges/Rectangl-36-Stroke.svg");
 }
 
