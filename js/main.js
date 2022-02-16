@@ -133,7 +133,8 @@ function editList(label, labelCount, todo, div) {
   li[labelCount].appendChild(input).focus();
 
   document.removeEventListener('keydown', enterKey);
-  document.addEventListener("keydown", () => editEnter(input, label, labelCount, div, event));
+  document.addEventListener("keydown", () => editKeyCode(input, label, labelCount, div, event));
+
 
   input.onblur = function () {
     editMade(input, label, labelCount, div);
@@ -147,14 +148,16 @@ function editMade(input, label, labelCount, div) {
   todoList[labelCount].todo = input.value;
   localStorage.setItem('todo', JSON.stringify(todoList.reverse()));
 
-  input.style.display = "none";
+  input.remove();
   div.style.display = "flex";
 
   label.innerHTML = input.value;
+
+  document.addEventListener('keydown', enterKey);
 }
 
-function editEnter(input, label, labelCount, div, event) {
-  if (event.code == 'Enter') {
+function editKeyCode(input, label, labelCount, div, event) {
+  if (event.code == 'Enter' || event.code == "Escape") {
     editMade(input, label, labelCount, div);
   }
 }
@@ -162,10 +165,16 @@ function editEnter(input, label, labelCount, div, event) {
 function enterKey(event) {
   if (event.code == 'Enter') {
     var text = document.getElementsByTagName("input")[1];
+    var input = text.value;
 
-    if (text.value) {
-      var input = text.value;
+    /* выдаёт true на строку с одними пробелами (один и больше) */
+    const re = / $/;
+    var valid = re.test(input);
+
+    if (input===true || valid === false) {
+
       text = document.getElementsByTagName("input")[1].value = "";
+
       var tmp = {};
       tmp.todo = input;
       tmp.check = false;
@@ -198,8 +207,7 @@ function patternList(out) {
   checkbox.setAttribute("data-action", "checkbox");
   li.classList.add("list__li")
   div.classList.add("flex");
-  div.style.margin = "5px";
-  label.style.width = "100%";
+  label.classList.add("list__label");
   checkbox.setAttribute('id', 'count');
   btn.classList.add("list__destroy");
   btn.setAttribute("data-action", "btn");
@@ -244,7 +252,9 @@ function createCompletedStorage() {
       tmp = todoList[btnKey];
       compl[compl.length] = tmp;
       btnKey++;
-    } else { btnKey++; }
+    } else {
+      btnKey++;
+    }
   }
 
   localStorage.setItem("completed", JSON.stringify(compl));
@@ -356,7 +366,9 @@ active.onclick = function () {
       if (count % 2 === 0) {
         btn[3].style.visibility = "hidden";
         count++;
-        for (var i = 0; i < todoList.length; i++) { todoList[(lenLi - 1) - i].check = false; }
+        for (var i = 0; i < todoList.length; i++) {
+          todoList[(lenLi - 1) - i].check = false;
+        }
         outPatternList(todoList);
         localStorage.setItem('todo', JSON.stringify(todoList));
         footer.querySelector(".strong").innerHTML = todoList.length + " item left";
@@ -405,7 +417,9 @@ completed.onclick = function () {
       btn[3].style.visibility = "hidden";
       count++;
       deleteLi();
-      for (var i = 0; i < label.length; i++) { todoList[(todoList.length - 1) - i].check = false; }
+      for (var i = 0; i < label.length; i++) {
+        todoList[(todoList.length - 1) - i].check = false;
+      }
       localStorage.setItem('todo', JSON.stringify(todoList));
       footer.querySelector(".strong").innerHTML = todoList.length + " item left";
     }

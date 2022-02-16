@@ -203,8 +203,11 @@ section {
 }
 
 .list__destroy {
-    margin-left: auto;
+    margin: auto;
     visibility: hidden;
+    width: 45px;
+    height: 40px;
+    padding: 0%;
 }
 
 .list__li:hover .list__destroy {
@@ -220,6 +223,7 @@ section {
     padding: 0%;
     text-align: center;
     content: "×";
+    font-weight: bolder;
 }
 
 .info {
@@ -228,6 +232,12 @@ section {
     font-size: 10px;
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
     text-align: center;
+}
+
+.list__label{
+    width: 100%;
+    padding: 20px;
+    
 }
 
 .list__label_mod {
@@ -264,7 +274,7 @@ section {
 .list__li {
     display: block;
     cursor: pointer;
-    font-size: 22px;
+    font-size: 25px;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -277,10 +287,12 @@ section {
     opacity: 0;
     cursor: pointer;
     margin: 0%;
-    padding: 0%;
-    left: 12px;
-    width: 16px;
-    height: 16px;
+    margin-top: 20px;
+  padding: 0%;
+  left: 6px;
+  width: 18px;
+  height: 18px;
+
 }
 
 .list__li_btn::before {
@@ -290,7 +302,7 @@ section {
     height: 15px;
     border: 2px solid #4d4d4d;
     border-radius: 100%;
-    margin: -3px 5px 0px 5px;
+    margin: 20px 5px 0px 5px;
     background-repeat: no-repeat;
     background-position: center center;
 }
@@ -299,7 +311,7 @@ section {
     background-size: 30%;
     background-repeat: no-repeat;
     background-position-x: 50%;
-    background-position-y: 25%;
+    background-position-y: 77%;
     margin-bottom: auto;
     background-image: url("../img/badges/Rectangl-36-Stroke.svg");
 }
@@ -314,15 +326,16 @@ section {
     margin-left: 30px;
     font-weight: 300;
     color: #e6e6e6;
-    width: 92.5%;
+/*     width: 92.5%; */
+    width: 90%;
     height: 22px;
-    font-size: 22px;
+    font-size: 25px;
     border: 1px;
     color: inherit;
-    padding: 0px;
     cursor: pointer;
     color: #4d4d4d;
-    padding: 5px;
+    padding: 20px 7px 20px 15px;
+
 }
 
 .edit:focus {
