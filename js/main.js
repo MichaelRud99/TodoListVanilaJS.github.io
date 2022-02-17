@@ -48,6 +48,8 @@ class workList {
 
     if (label.classList.contains('list__label_mod')) {
 
+      btn[3].style.visibility = "visible";
+
       countDone++;
       todoList[inputCount].check = true;
       todoList.reverse();
@@ -63,6 +65,8 @@ class workList {
 
     count = chekDoneTodo(todoList);
     footer.querySelector(".strong").innerHTML = count + ' item left';
+
+    if (countDone === 0) { btn[3].style.visibility = "hidden"; }
   }
 
   btn() {
@@ -169,9 +173,8 @@ function enterKey(event) {
 
     const re = /[0-9,a-z,A-Z]{1}[0-9,a-z,A-Z]*[\s]*$/;
     var valid = re.test(input);
-    console.log(valid);
 
-      if(valid === true){
+    if (valid === true) {
 
       text = document.getElementsByTagName("input")[1].value = "";
 
@@ -208,7 +211,7 @@ function patternList(out) {
   li.classList.add("list__li")
   div.classList.add("flex");
   label.classList.add("list__label");
-  checkbox.setAttribute('id', 'count');
+  /*   checkbox.setAttribute('id', 'count'); */
   btn.classList.add("list__destroy");
   btn.setAttribute("data-action", "btn");
   parentUl.insertBefore(li, firstUl);
@@ -428,19 +431,22 @@ completed.onclick = function () {
 }
 
 clear_completed.onclick = function () {
+  
   var lenTodoList = todoList.length;
+  var li = convertLi();
 
   for (var i = 0; i < lenTodoList; i++) {
     if (todoList[(lenTodoList - 1) - i].check === true) {
       todoList.splice((lenTodoList - 1) - i, 1);
       localStorage.setItem('todo', JSON.stringify(todoList));
+      li[i].remove();
     }
   }
 
-  footer.style.display = "none";
-  innerInput.style.display = "none";
-  innerLabel.style.display = "none";
+  if (todoList.length === 0) {
+    footer.style.display = "none";
+    innerInput.style.display = "none";
+    innerLabel.style.display = "none";
+  }
 
-  localStorage.clear();
-  deleteLi();
 }

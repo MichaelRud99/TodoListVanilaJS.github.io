@@ -141,7 +141,7 @@ section {
 }
 
 .todoapp__select-all {
-    width: 30px;
+    width: 40px;
     height: 46px;
     position: absolute;
     top: 0;
@@ -154,7 +154,7 @@ section {
 }
 
 .todoapp__select-all+label {
-    width: 30px;
+    width: 40px;
     content: '';
     display: inline-block;
     border-radius: 100%;
@@ -162,11 +162,12 @@ section {
     background-repeat: no-repeat;
     background-position: center center;
 }
-
+/* 
 .todoapp__select-all:checked+label {
     
     background-image: url("../img/badges/Rectangle-34-nw.svg");
-}
+
+} */
 
 .todoapp_new-todo {
     font-style: italic;
@@ -236,7 +237,7 @@ section {
 
 .list__label{
     width: 100%;
-    padding: 20px;
+    padding: 15px;
     
 }
 
@@ -283,16 +284,22 @@ section {
 }
 
 .list__li_checkbox {
-    position: absolute;
+    position: relative;
     opacity: 0;
     cursor: pointer;
     margin: 0%;
-    margin-top: 20px;
+    margin-top: auto;
+    margin-bottom: auto;
   padding: 0%;
-  left: 6px;
+  left: 12px;
   width: 18px;
   height: 18px;
 
+}
+
+.list__li_btn{
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 .list__li_btn::before {
@@ -302,16 +309,14 @@ section {
     height: 15px;
     border: 2px solid #4d4d4d;
     border-radius: 100%;
-    margin: 20px 5px 0px 5px;
-    background-repeat: no-repeat;
-    background-position: center center;
+    margin: auto 5px auto -5px;
 }
 
 .list__span_mod {
-    background-size: 30%;
+    background-size: 45%;
     background-repeat: no-repeat;
-    background-position-x: 50%;
-    background-position-y: 77%;
+    background-position-x: 0%;
+    background-position-y: 50%;
     margin-bottom: auto;
     background-image: url("../img/badges/Rectangl-36-Stroke.svg");
 }
