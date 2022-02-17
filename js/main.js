@@ -167,11 +167,11 @@ function enterKey(event) {
     var text = document.getElementsByTagName("input")[1];
     var input = text.value;
 
-    /* выдаёт true на строку с одними пробелами (один и больше) */
-    const re = / $/;
+    const re = /[0-9,a-z,A-Z]{1}[0-9,a-z,A-Z]*[\s]*$/;
     var valid = re.test(input);
+    console.log(valid);
 
-    if (input===true || valid === false) {
+      if(valid === true){
 
       text = document.getElementsByTagName("input")[1].value = "";
 
