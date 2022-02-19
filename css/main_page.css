@@ -141,6 +141,7 @@ section {
 }
 
 .todoapp__select-all {
+    cursor: pointer;
     width: 40px;
     height: 46px;
     position: absolute;
@@ -162,6 +163,7 @@ section {
     background-repeat: no-repeat;
     background-position: center center;
 }
+
 /* 
 .todoapp__select-all:checked+label {
     
@@ -235,15 +237,23 @@ section {
     text-align: center;
 }
 
-.list__label{
+.list__label {
     width: 100%;
     padding: 15px;
-    
+    padding-left: 0px;
 }
 
 .list__label_mod {
     color: #d9d9d9;
     text-decoration: line-through;
+
+}
+
+.transition_color {
+    transition-property: color;
+    transition-duration: 300ms;
+    transition-delay: 0s;
+    transition-timing-function: linear;
 }
 
 .strong {
@@ -252,14 +262,12 @@ section {
 }
 
 .todoapp__btn {
+    cursor: pointer;
     margin: 3px;
     padding: 3px 7px;
     color: #777;
     background-color: white;
     border: 0px;
-}
-
-.todoapp__btn_mod {
     border: 1px solid transparent;
 }
 
@@ -267,7 +275,8 @@ section {
     text-decoration: underline;
 }
 
-.todoapp__btn_mod:focus {
+.todoapp__btn_mod,
+.todoapp__btn_mod:hover {
     color: inherit;
     border: 1px solid rgba(175, 47, 47, 0.2);
 }
@@ -288,35 +297,39 @@ section {
     opacity: 0;
     cursor: pointer;
     margin: 0%;
+    margin-top: 0%;
+    margin-bottom: 0%;
     margin-top: auto;
     margin-bottom: auto;
-  padding: 0%;
-  left: 12px;
-  width: 18px;
-  height: 18px;
-
+    padding: 0%;
+    left: 12px;
+    width: 30px;
+    height: 25px;
+    z-index: 1;
 }
 
-.list__li_btn{
+.list__li_btn {
     margin-top: auto;
     margin-bottom: auto;
+    position: relative;
+    left: -15px;
 }
 
 .list__li_btn::before {
     content: '';
     display: inline-block;
-    width: 15px;
-    height: 15px;
+    width: 25px;
+    height: 25px;
     border: 2px solid #4d4d4d;
     border-radius: 100%;
-    margin: auto 5px auto -5px;
+    margin: auto auto;
+
 }
 
 .list__span_mod {
     background-size: 45%;
     background-repeat: no-repeat;
-    background-position-x: 0%;
-    background-position-y: 50%;
+    background-position: 50%;
     margin-bottom: auto;
     background-image: url("../img/badges/Rectangl-36-Stroke.svg");
 }
@@ -331,7 +344,6 @@ section {
     margin-left: 30px;
     font-weight: 300;
     color: #e6e6e6;
-/*     width: 92.5%; */
     width: 90%;
     height: 22px;
     font-size: 25px;
