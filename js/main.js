@@ -2,25 +2,21 @@ var ul = document.querySelector("ul");
 var parentUl = document.querySelector("parentUl");
 var footer = document.querySelector("footer");
 var btn = footer.querySelectorAll("input");
-var todoList = [];
-var count = 0;
-let c=0;
-let countDone;
+
 var allDiv = document.querySelectorAll("div");
 var innerInput = allDiv[2].querySelector("input");
 var innerLabel = allDiv[2].querySelector("label");
 
-document.addEventListener('keydown', enterKey);
+var todoList = [];
+var count = 0;
+let c=0;
+let countDone;
+let input;
+
+document.addEventListener("keydown", enterKey);
+document.addEventListener("keydown",outNewList);
 if (JSON.parse(localStorage.getItem("todo")) != undefined) {
   var todoList = JSON.parse(localStorage.getItem("todo"));
-
-  for (var key in todoList){
-    if(todoList[key].check === true){
-      btn[3].style.visibility="visible";
-      break;
-    }
-  }
-
 }
 
 if (JSON.parse(localStorage.getItem("todo")) === undefined || todoList.length === 0) {
@@ -36,6 +32,13 @@ class workList {
     this._elem = elem;
     elem.onclick = this.onClick.bind(this);
     countDone = localStorage.getItem('countDone', countDone);
+
+    for (var key in todoList) {
+      if (todoList[key].check === true) {
+        btn[3].style.visibility="visible";
+        addListMod(key);
+      }
+    }
   }
 
   checkbox() {
@@ -183,10 +186,11 @@ function editKeyCode(input, label, labelCount, div, event) {
   }
 }
 
-function enterKey(event) {
+function enterKey(){
+    
   if (event.code == 'Enter') {
     var text = document.getElementsByTagName("input")[1];
-    var input = text.value;
+    input = text.value;
     const re = /[\s]{1}[\s]*$/;
     var valid = re.test(input);
     if (input) {
@@ -206,12 +210,12 @@ function enterKey(event) {
 
         count = chekDoneTodo(todoList);
         footer.querySelector(".strong").innerHTML = count + ' item left';
-
-        patternList(tmp.todo);
       }
     }
   }
 }
+
+function outNewList(){if (event.code == 'Enter') {patternList(input);}}
 
 function patternList(out) {
   var parentUl = document.getElementById('list');
@@ -225,17 +229,18 @@ function patternList(out) {
   checkbox.type = 'checkbox';
   checkbox.classList.add("list__li_checkbox");
   checkbox.setAttribute("data-action", "checkbox");
-  li.classList.add("list__li")
+  li.classList.add("list__li");
   div.classList.add("flex");
+  span.classList.add("list__li_btn");
+  span.classList.add("transition-position");
   label.classList.add("list__label");
-  /*   checkbox.setAttribute('id', 'count'); */
+  label.classList.add("transition-color");
   btn.classList.add("list__destroy");
   btn.setAttribute("data-action", "btn");
   parentUl.insertBefore(li, firstUl);
   li.appendChild(div);
   div.appendChild(checkbox);
   div.appendChild(span);
-  span.classList.add("list__li_btn");
   div.appendChild(label);
   label.appendChild(document.createTextNode(out));
   div.appendChild(btn);
@@ -252,7 +257,6 @@ function chekDoneTodo(todoList) {
   var c = 0;
   for (var i = 0; i < todoList.length; i++) {
     if (todoList[i].check === true) {
-      addListMod(i);
       c++;
     }
   }
@@ -311,7 +315,6 @@ function addListMod(i) {
   span.reverse();
   if (label[i] != undefined && span[i] != undefined) {
     label[i].classList.add("list__label_mod");
-    label[i].classList.add("transition_color");
     span[i].classList.add("list__span_mod");
   }
 }
@@ -416,6 +419,7 @@ select_all.onclick = function () {
 }
 
 all.onclick = function () {
+  document.addEventListener('keydown', outNewList);
   deleteLi();
   outPatternList(todoList);
 
@@ -437,7 +441,7 @@ all.onclick = function () {
 }
 
 active.onclick = function () {
-
+  document.addEventListener('keydown', outNewList);
   deleteLi();
   outPatternList(todoList);
 
@@ -485,6 +489,7 @@ active.onclick = function () {
 }
 
 completed.onclick = function () {
+  document.removeEventListener('keydown', outNewList);
 
   deleteLi();
   outPatternList(todoList);
@@ -526,6 +531,7 @@ completed.onclick = function () {
   btn[0].classList.remove("todoapp__btn_mod");
   btn[1].classList.remove("todoapp__btn_mod");
   btn[2].classList.add("todoapp__btn_mod");
+
 }
 
 clear_completed.onclick = function () {

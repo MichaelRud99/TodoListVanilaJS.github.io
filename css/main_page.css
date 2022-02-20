@@ -249,11 +249,18 @@ section {
 
 }
 
-.transition_color {
+.transition-color {
     transition-property: color;
     transition-duration: 300ms;
     transition-delay: 0s;
     transition-timing-function: linear;
+}
+
+.transition-position{
+    transition-property: background-position;
+    transition-duration: 400ms;
+    transition-delay: 0s;
+    transition-timing-function: cubic-bezier(.22,.61,.36,1);
 }
 
 .strong {
@@ -332,6 +339,7 @@ section {
     background-position: 50%;
     margin-bottom: auto;
     background-image: url("../img/badges/Rectangl-36-Stroke.svg");
+
 }
 
 .todoapp__footer {
