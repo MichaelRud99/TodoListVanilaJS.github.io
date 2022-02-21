@@ -164,13 +164,6 @@ section {
     background-position: center center;
 }
 
-/* 
-.todoapp__select-all:checked+label {
-    
-    background-image: url("../img/badges/Rectangle-34-nw.svg");
-
-} */
-
 .todoapp_new-todo {
     font-style: italic;
     font-weight: 300;
@@ -256,11 +249,11 @@ section {
     transition-timing-function: linear;
 }
 
-.transition-position{
+.transition-position {
     transition-property: background-position;
     transition-duration: 400ms;
     transition-delay: 0s;
-    transition-timing-function: cubic-bezier(.22,.61,.36,1);
+    transition-timing-function: cubic-bezier(.22, .61, .36, 1);
 }
 
 .strong {

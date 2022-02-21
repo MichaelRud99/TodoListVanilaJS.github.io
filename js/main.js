@@ -9,12 +9,12 @@ var innerLabel = allDiv[2].querySelector("label");
 
 var todoList = [];
 var count = 0;
-let c=0;
+let c = 0;
 let countDone;
 let input;
 
 document.addEventListener("keydown", enterKey);
-document.addEventListener("keydown",outNewList);
+document.addEventListener("keydown", outNewList);
 if (JSON.parse(localStorage.getItem("todo")) != undefined) {
   var todoList = JSON.parse(localStorage.getItem("todo"));
 }
@@ -35,7 +35,7 @@ class workList {
 
     for (var key in todoList) {
       if (todoList[key].check === true) {
-        btn[3].style.visibility="visible";
+        btn[3].style.visibility = "visible";
         addListMod(key);
       }
     }
@@ -101,6 +101,7 @@ ul.ondblclick = function (event) {
 };
 
 function checkb() {
+
   let todoList = JSON.parse(localStorage.getItem("todo"));
   todoList.reverse();
 
@@ -141,7 +142,7 @@ function checkb() {
     }
   }
   if (c === 0) { btn[3].style.visibility = "hidden"; }
-  c=0;
+  c = 0;
 }
 
 function editList(label, labelCount, todo, div) {
@@ -150,44 +151,46 @@ function editList(label, labelCount, todo, div) {
 
   div.style.display = "none";
 
-  let input = document.createElement("input");
-  input.classList.add("edit");
-  input.type = "text";
-  input.value = todo;
-  li[labelCount].appendChild(input).focus();
+  let edit = document.createElement("input");
+  edit.classList.add("edit");
+  edit.type = "text";
+  edit.value = todo;
+  li[labelCount].appendChild(edit).focus();
 
   document.removeEventListener('keydown', enterKey);
-  document.addEventListener("keydown", () => editKeyCode(input, label, labelCount, div, event));
+  document.removeEventListener("keydown", outNewList);
+  document.addEventListener("keydown", () => editKeyCode(edit, label, labelCount, div, event));
 
 
-  input.onblur = function () {
-    editMade(input, label, labelCount, div);
+  edit.onblur = function () {
+    editMade(edit, label, labelCount, div);
   };
 
 }
 
-function editMade(input, label, labelCount, div) {
+function editMade(edit, label, labelCount, div) {
 
   todoList.reverse();
-  todoList[labelCount].todo = input.value;
+  todoList[labelCount].todo = edit.value;
   localStorage.setItem('todo', JSON.stringify(todoList.reverse()));
 
-  input.remove();
+  edit.remove();
   div.style.display = "flex";
 
-  label.innerHTML = input.value;
+  label.innerHTML = edit.value;
 
   document.addEventListener('keydown', enterKey);
+  document.addEventListener("keydown", outNewList);
 }
 
-function editKeyCode(input, label, labelCount, div, event) {
+function editKeyCode(edit, label, labelCount, div, event) {
   if (event.code == 'Enter' || event.code == "Escape") {
-    editMade(input, label, labelCount, div);
+    editMade(edit, label, labelCount, div);
   }
 }
 
-function enterKey(){
-    
+function enterKey() {
+
   if (event.code == 'Enter') {
     var text = document.getElementsByTagName("input")[1];
     input = text.value;
@@ -215,7 +218,7 @@ function enterKey(){
   }
 }
 
-function outNewList(){if (event.code == 'Enter') {patternList(input);}}
+function outNewList() { if (event.code == 'Enter') { patternList(input); } }
 
 function patternList(out) {
   var parentUl = document.getElementById('list');
@@ -356,8 +359,8 @@ function selectAll() {
     footer.querySelector(".strong").innerHTML = "0 item left";
     btn[3].style.visibility = "visible";
   }
-  
-  c=0;
+
+  c = 0;
 }
 
 function activeCompleted(bool, bool2, name) {
@@ -413,6 +416,12 @@ function activeCompleted(bool, bool2, name) {
 
 }
 
+function choseMode(a, b, c) {
+  btn[a].classList.add("todoapp__btn_mod");
+  btn[b].classList.remove("todoapp__btn_mod");
+  btn[c].classList.remove("todoapp__btn_mod");
+}
+
 select_all.onclick = function () {
   selectAll();
 
@@ -434,10 +443,7 @@ all.onclick = function () {
   select_all.onclick = function () {
     selectAll();
   }
-
-  btn[0].classList.add("todoapp__btn_mod");
-  btn[1].classList.remove("todoapp__btn_mod");
-  btn[2].classList.remove("todoapp__btn_mod");
+  choseMode(0, 1, 2);
 }
 
 active.onclick = function () {
@@ -481,11 +487,7 @@ active.onclick = function () {
     c = 0;
 
   }
-
-  btn[0].classList.remove("todoapp__btn_mod");
-  btn[1].classList.add("todoapp__btn_mod");
-  btn[2].classList.remove("todoapp__btn_mod");
-
+  choseMode(1, 2, 0);
 }
 
 completed.onclick = function () {
@@ -515,6 +517,7 @@ completed.onclick = function () {
       btn[3].style.visibility = "hidden";
 
     } else {
+      deleteLi();
       outPatternList(todoList);
       for (var key in todoList) {
         todoList[key].check = true;
@@ -528,10 +531,7 @@ completed.onclick = function () {
     c = 0;
   }
 
-  btn[0].classList.remove("todoapp__btn_mod");
-  btn[1].classList.remove("todoapp__btn_mod");
-  btn[2].classList.add("todoapp__btn_mod");
-
+  choseMode(2, 1, 0);
 }
 
 clear_completed.onclick = function () {
