@@ -531,6 +531,20 @@ completed.onclick = function () {
     c = 0;
   }
 
+  clear_completed.onclick = function () {
+
+    var lenTodoList = todoList.length;
+
+    for (var i = 0; i < lenTodoList; i++) {
+      if (todoList[(lenTodoList - 1) - i].check === true) {
+        todoList.splice((lenTodoList - 1) - i, 1);
+      }
+    }
+    localStorage.setItem('todo', JSON.stringify(todoList));
+    deleteLi();
+    btn[3].style.visibility = "hidden";
+
+  }
   choseMode(2, 1, 0);
 }
 
@@ -542,12 +556,12 @@ clear_completed.onclick = function () {
   for (var i = 0; i < lenTodoList; i++) {
     if (todoList[(lenTodoList - 1) - i].check === true) {
       todoList.splice((lenTodoList - 1) - i, 1);
-      localStorage.setItem('todo', JSON.stringify(todoList));
       if (li[i] != undefined) {
         li[i].remove();
       }
     }
   }
+  localStorage.setItem('todo', JSON.stringify(todoList));
 
   if (todoList.length === 0) {
     footer.style.display = "none";
