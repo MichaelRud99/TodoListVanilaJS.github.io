@@ -12,6 +12,7 @@ var count = 0;
 let c = 0;
 let countDone;
 let input;
+let valid;
 
 document.addEventListener("keydown", enterKey);
 document.addEventListener("keydown", outNewList);
@@ -195,7 +196,7 @@ function enterKey() {
     var text = document.getElementsByTagName("input")[1];
     input = text.value;
     const re = /[\s]{1}[\s]*$/;
-    var valid = re.test(input);
+    valid = re.test(input);
     if (input) {
       if (valid === false) {
 
@@ -218,7 +219,11 @@ function enterKey() {
   }
 }
 
-function outNewList() { if (event.code == 'Enter') { patternList(input); } }
+function outNewList() { 
+  if (event.code == 'Enter') {  
+    if (input){ if(valid === false){patternList(input); } }}
+  }
+   
 
 function patternList(out) {
   var parentUl = document.getElementById('list');
