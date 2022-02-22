@@ -223,8 +223,7 @@ function outNewList() {
   if (event.code == 'Enter') {  
     if (input){ if(valid === false){patternList(input); } }}
   }
-   
-
+  
 function patternList(out) {
   var parentUl = document.getElementById('list');
   var firstUl = parentUl.firstChild;
