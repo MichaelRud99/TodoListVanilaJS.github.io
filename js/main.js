@@ -424,6 +424,10 @@ function choseMode(a, b, c) {
   btn[a].classList.add("todoapp__btn_mod");
   btn[b].classList.remove("todoapp__btn_mod");
   btn[c].classList.remove("todoapp__btn_mod");
+
+  btn[a].classList.remove("todoapp__btn_hover");
+  btn[b].classList.add("todoapp__btn_hover");
+  btn[c].classList.add("todoapp__btn_hover");
 }
 
 select_all.onclick = function () {
@@ -491,7 +495,7 @@ active.onclick = function () {
     c = 0;
 
   }
-  choseMode(1, 2, 0);
+  choseMode(1, 0, 2);
 }
 
 completed.onclick = function () {
