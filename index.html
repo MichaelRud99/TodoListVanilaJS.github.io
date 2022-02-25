@@ -54,17 +54,16 @@
       <div class="todoapp">
         <div class="flex todoapp__frame">
           <input id="select_all" type="checkbox" class="todoapp__select-all" autofocus="">
-          <label></label>
-          <input id="textInput" class="todoapp_new-todo" placeholder="What needs to be done?" autofocus="">
+          <input id="textInput" class="todoapp__new-todo" placeholder="What needs to be done?" autofocus="">
         </div>
         <ul id="list" class="list">
         </ul>
         <footer class="flex todoapp__footer">
           <strong class="strong" value="0" data-counter></strong>
           <div>
-            <input type="button" id="all" class="todoapp__btn todoapp__btn_mod" value="All" autofocus>
-            <input type="button" id="active" class="todoapp__btn " value="Active">
-            <input type="button" id="completed" class="todoapp__btn " value="Completed">
+            <input type="button" id="all" class="todoapp__btn todoapp__btn_mod transition-back-border" value="All" autofocus>
+            <input type="button" id="active" class="todoapp__btn todoapp__btn_hover transition-back-border" value="Active">
+            <input type="button" id="completed" class="todoapp__btn todoapp__btn_hover transition-back-border" value="Completed">
           </div>
           <input type="button" id="clear_completed" class="todoapp__btn todoapp__btn_clear-completed"
             value="clear completed" style="visibility: hidden;">

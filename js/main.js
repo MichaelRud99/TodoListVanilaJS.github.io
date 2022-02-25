@@ -5,13 +5,13 @@ var btn = footer.querySelectorAll("input");
 
 var allDiv = document.querySelectorAll("div");
 var innerInput = allDiv[2].querySelector("input");
-var innerLabel = allDiv[2].querySelector("label");
 
 var todoList = [];
 var count = 0;
 let c = 0;
 let countDone;
 let input;
+let valid;
 
 document.addEventListener("keydown", enterKey);
 document.addEventListener("keydown", outNewList);
@@ -22,7 +22,6 @@ if (JSON.parse(localStorage.getItem("todo")) != undefined) {
 if (JSON.parse(localStorage.getItem("todo")) === undefined || todoList.length === 0) {
   footer.style.display = "none";
   innerInput.style.display = "none";
-  innerLabel.style.display = "none";
 }
 
 class workList {
@@ -66,7 +65,6 @@ class workList {
     if (todoList.length === 0) {
       footer.style.display = "none";
       innerInput.style.display = "none";
-      innerLabel.style.display = "none";
     }
   }
 
@@ -195,7 +193,7 @@ function enterKey() {
     var text = document.getElementsByTagName("input")[1];
     input = text.value;
     const re = /[\s]{1}[\s]*$/;
-    var valid = re.test(input);
+    valid = re.test(input);
     if (input) {
       if (valid === false) {
 
@@ -208,8 +206,7 @@ function enterKey() {
         localStorage.setItem('todo', JSON.stringify(todoList));
 
         footer.style.display = "flex";
-        innerInput.style.display = "flex";
-        innerLabel.style.display = "inline-block";
+        innerInput.style.display = "block";
 
         count = chekDoneTodo(todoList);
         footer.querySelector(".strong").innerHTML = count + ' item left';
@@ -218,8 +215,11 @@ function enterKey() {
   }
 }
 
-function outNewList() { if (event.code == 'Enter') { patternList(input); } }
-
+function outNewList() { 
+  if (event.code == 'Enter') {  
+    if (input){ if(valid === false){patternList(input); } }}
+  }
+  
 function patternList(out) {
   var parentUl = document.getElementById('list');
   var firstUl = parentUl.firstChild;
@@ -333,6 +333,8 @@ function removeListMod(i) {
 
 function selectAll() {
 
+  select_all.classList.toggle("todoapp__select-all_mod");
+
   for (var key in todoList) {
     if (todoList[key].check === true) {
       c++;
@@ -420,6 +422,10 @@ function choseMode(a, b, c) {
   btn[a].classList.add("todoapp__btn_mod");
   btn[b].classList.remove("todoapp__btn_mod");
   btn[c].classList.remove("todoapp__btn_mod");
+
+  btn[a].classList.remove("todoapp__btn_hover");
+  btn[b].classList.add("todoapp__btn_hover");
+  btn[c].classList.add("todoapp__btn_hover");
 }
 
 select_all.onclick = function () {
@@ -454,7 +460,8 @@ active.onclick = function () {
   activeCompleted(true, false, "not-completed")
 
   select_all.onclick = function () {
-
+    
+    select_all.classList.toggle("todoapp__select-all_mod");
 
     for (var key in todoList) {
       if (todoList[key].check === true) {
@@ -487,11 +494,13 @@ active.onclick = function () {
     c = 0;
 
   }
-  choseMode(1, 2, 0);
+  choseMode(1, 0, 2);
 }
 
 completed.onclick = function () {
   document.removeEventListener('keydown', outNewList);
+
+  select_all.classList.toggle("todoapp__select-all_mod");
 
   deleteLi();
   outPatternList(todoList);
@@ -566,7 +575,7 @@ clear_completed.onclick = function () {
   if (todoList.length === 0) {
     footer.style.display = "none";
     innerInput.style.display = "none";
-    innerLabel.style.display = "none";
+
   }
 
 }
