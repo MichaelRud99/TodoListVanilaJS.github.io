@@ -333,8 +333,6 @@ function removeListMod(i) {
 
 function selectAll() {
 
-  select_all.classList.toggle("todoapp__select-all_mod");
-
   for (var key in todoList) {
     if (todoList[key].check === true) {
       c++;
@@ -461,8 +459,6 @@ active.onclick = function () {
 
   select_all.onclick = function () {
     
-    select_all.classList.toggle("todoapp__select-all_mod");
-
     for (var key in todoList) {
       if (todoList[key].check === true) {
         c++;
@@ -499,8 +495,6 @@ active.onclick = function () {
 
 completed.onclick = function () {
   document.removeEventListener('keydown', outNewList);
-
-  select_all.classList.toggle("todoapp__select-all_mod");
 
   deleteLi();
   outPatternList(todoList);

@@ -166,15 +166,10 @@ section {
     content: "v";
 }
 
-.todoapp__select-all_mod,
 .todoapp__select-all:hover {
+    font-size: 35px;
     font-weight: 700;
     color: #EFA501;
-}
-
-.todoapp__select-all_mod {
-    font-size: 35px;
-    transition-duration: 150ms;
 }
 
 .todoapp__new-todo {
