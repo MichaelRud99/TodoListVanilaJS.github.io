@@ -1,115 +1,39 @@
-var ul = document.querySelector("ul");
-var parentUl = document.querySelector("parentUl");
-var footer = document.querySelector("footer");
-var btn = footer.querySelectorAll("input");
+let ul = document.querySelector("ul");
+let parentUl = document.querySelector("parentUl");
+let footer = document.querySelector("footer");
+let btn = footer.querySelectorAll("input");
 
-var allDiv = document.querySelectorAll("div");
-var innerInput = allDiv[2].querySelector("input");
+let allDiv = document.querySelectorAll("div");
+let inputSelectAll = allDiv[2].querySelector("input");
 
-var todoList = [];
-var count = 0;
+let todoList = [];
+let count = 0;
 let c = 0;
 let countDone;
 let input;
 let valid;
 
-document.addEventListener("keydown", enterKey);
-document.addEventListener("keydown", outNewList);
 if (JSON.parse(localStorage.getItem("todo")) != undefined) {
-  var todoList = JSON.parse(localStorage.getItem("todo"));
+  todoList = JSON.parse(localStorage.getItem("todo"));
 }
 
 if (JSON.parse(localStorage.getItem("todo")) === undefined || todoList.length === 0) {
   footer.style.display = "none";
-  innerInput.style.display = "none";
+  inputSelectAll.style.display = "none";
 }
 
-class workList {
-  constructor(elem) {
-    outPatternList(todoList);
-    chekDoneTodo(todoList);
-    this._elem = elem;
-    elem.onclick = this.onClick.bind(this);
-    countDone = localStorage.getItem('countDone', countDone);
+let changeCheckbox = () => {
 
-    for (var key in todoList) {
-      if (todoList[key].check === true) {
-        btn[3].style.visibility = "visible";
-        addListMod(key);
-      }
-    }
-  }
-
-  checkbox() {
-    checkb();
-  }
-
-  btn() {
-    let todoList = JSON.parse(localStorage.getItem("todo"));
-    todoList.reverse();
-
-    let buttonCount = ul.querySelectorAll("button");
-    buttonCount = Array.prototype.slice.call(buttonCount)
-    buttonCount = buttonCount.indexOf(event.target)
-
-    let li = ul.querySelectorAll("li");
-    li[buttonCount].remove();
-
-    todoList.splice(buttonCount, 1);
-    todoList.reverse();
-    localStorage.setItem('todo', JSON.stringify(todoList));
-
-    count = chekDoneTodo(todoList);
-    footer.querySelector(".strong").innerHTML = count + ' item left';
-
-    if (todoList.length === 0) {
-      footer.style.display = "none";
-      innerInput.style.display = "none";
-    }
-  }
-
-  onClick(event) {
-    let action = event.target.dataset.action;
-    if (action) {
-      this[action]();
-      todoList = JSON.parse(localStorage.getItem("todo"));
-    }
-  }
-}
-
-workList = new workList(ul);
-
-ul.ondblclick = function (event) {
-
-  let todoList = JSON.parse(localStorage.getItem("todo"));
+  todoList = JSON.parse(localStorage.getItem("todo"));
   todoList.reverse();
 
-  let label = event.target.closest("label");
-  let labelCount = ul.querySelectorAll("label");
-  labelCount = Array.prototype.slice.call(labelCount)
-  labelCount = labelCount.indexOf(event.target);
-
-  if (labelCount === -1) return;
-
-  let todo = todoList[labelCount].todo;
-  let div = event.target.closest("div");
-
-  editList(label, labelCount, todo, div);
-
-};
-
-function checkb() {
-
-  let todoList = JSON.parse(localStorage.getItem("todo"));
-  todoList.reverse();
-
-  let div = event.target.closest("div");
-  let label = div.querySelector("label");
-  let span = div.querySelector("span");
+  div = event.target.closest("div");
+  label = div.querySelector("label");
+  span = div.querySelector("span");
 
   let inputCount = ul.querySelectorAll("input");
-  inputCount = Array.prototype.slice.call(inputCount)
-  inputCount = inputCount.indexOf(event.target)
+  inputCount = Array.prototype.slice.call(inputCount);
+  inputCount = inputCount.indexOf(event.target);
 
   label.classList.toggle("list__label_mod");
   span.classList.toggle("list__span_mod");
@@ -120,77 +44,77 @@ function checkb() {
 
     countDone++;
     todoList[inputCount].check = true;
-    todoList.reverse();
 
   } else {
 
     countDone--;
     todoList[inputCount].check = false;
-    todoList.reverse();
-
   }
+
+  todoList.reverse();
   localStorage.setItem('todo', JSON.stringify(todoList));
 
-  count = chekDoneTodo(todoList);
+  count = checkDoneTodo(todoList);
   footer.querySelector(".strong").innerHTML = count + ' item left';
 
-  for (var key in todoList) {
-    if (todoList[key].check === true) {
-      c++;
-    }
-  }
+  c = (todoList.filter(todoList => todoList.check === true)).length;
+
   if (c === 0) { btn[3].style.visibility = "hidden"; }
   c = 0;
 }
 
-function editList(label, labelCount, todo, div) {
-
-  let li = ul.querySelectorAll("li");
-
+let editList = (label, labelCount, todo, div) => {
+  li = ul.querySelectorAll("li");
   div.style.display = "none";
+  todoList.reverse();
 
-  let edit = document.createElement("input");
-  edit.classList.add("edit");
-  edit.type = "text";
-  edit.value = todo;
-  li[labelCount].appendChild(edit).focus();
+  let inputField = document.createElement("input");
+  inputField.classList.add("edit");
+  inputField.type = "text";
+  inputField.value = todo;
+  li[labelCount].appendChild(inputField).focus();
 
   document.removeEventListener('keydown', enterKey);
   document.removeEventListener("keydown", outNewList);
-  document.addEventListener("keydown", () => editKeyCode(edit, label, labelCount, div, event));
+  document.addEventListener("keydown", () => editKeyCode(inputField, label, labelCount, div, event), { once: true });
 
-
-  edit.onblur = function () {
-    editMade(edit, label, labelCount, div);
+  inputField.onblur = function () {
+    editMade(inputField, label, labelCount, div);
   };
 
 }
 
-function editMade(edit, label, labelCount, div) {
-
-  todoList.reverse();
-  todoList[labelCount].todo = edit.value;
-  localStorage.setItem('todo', JSON.stringify(todoList.reverse()));
-
-  edit.remove();
-  div.style.display = "flex";
-
-  label.innerHTML = edit.value;
-
-  document.addEventListener('keydown', enterKey);
-  document.addEventListener("keydown", outNewList);
-}
-
-function editKeyCode(edit, label, labelCount, div, event) {
+let editKeyCode = (inputField, label, labelCount, div, event) => {
   if (event.code == 'Enter' || event.code == "Escape") {
-    editMade(edit, label, labelCount, div);
+    editMade(inputField, label, labelCount, div);
   }
 }
 
-function enterKey() {
+let editMade = (inputField, label, labelCount, div) => {
+
+  todoList.reverse();
+  todoList[labelCount].todo = inputField.value;
+  console.log(inputField.value);
+  localStorage.setItem('todo', JSON.stringify(todoList.reverse()));
+
+  inputField.remove();
+  div.style.display = "flex";
+
+  label.innerHTML = inputField.value;
+
+  document.addEventListener('keydown', enterKey);
+  document.addEventListener("keydown", outNewList);
+
+  document.removeEventListener("keydown", () => editKeyCode(inputField, label, labelCount, div, event));
+}
+
+let enterKey = () => {
+
+  document.removeEventListener("keydown", () => editKeyCode(inputField, label, labelCount, div, event));
 
   if (event.code == 'Enter') {
-    var text = document.getElementsByTagName("input")[1];
+
+    let text = document.getElementsByTagName("input")[1];
     input = text.value;
     const re = /[\s]{1}[\s]*$/;
     valid = re.test(input);
@@ -199,36 +123,37 @@ function enterKey() {
 
         text = document.getElementsByTagName("input")[1].value = "";
 
-        var tmp = {};
+        let tmp = {};
         tmp.todo = input;
         tmp.check = false;
         todoList[todoList.length] = tmp
         localStorage.setItem('todo', JSON.stringify(todoList));
 
         footer.style.display = "flex";
-        innerInput.style.display = "block";
+        inputSelectAll.style.display = "block";
 
-        count = chekDoneTodo(todoList);
+        count = checkDoneTodo(todoList);
         footer.querySelector(".strong").innerHTML = count + ' item left';
       }
     }
   }
 }
 
-function outNewList() { 
-  if (event.code == 'Enter') {  
-    if (input){ if(valid === false){patternList(input); } }}
+let outNewList = () => {
+  if (event.code == 'Enter') {
+    if (input) { if (valid === false) { patternList(input); } }
   }
-  
-function patternList(out) {
-  var parentUl = document.getElementById('list');
-  var firstUl = parentUl.firstChild;
-  var div = document.createElement("div");
-  var li = document.createElement("li");
-  var checkbox = document.createElement("input");
-  var span = document.createElement("span");
-  var label = document.createElement("label");
-  var btn = document.createElement("button");
+}
+
+let patternList = (out) => {
+  let parentUl = document.getElementById('list');
+  let firstUl = parentUl.firstChild;
+  let div = document.createElement("div");
+  let li = document.createElement("li");
+  let checkbox = document.createElement("input");
+  let span = document.createElement("span");
+  let label = document.createElement("label");
+  let btn = document.createElement("button");
   checkbox.type = 'checkbox';
   checkbox.classList.add("list__li_checkbox");
   checkbox.setAttribute("data-action", "checkbox");
@@ -249,146 +174,109 @@ function patternList(out) {
   div.appendChild(btn);
 }
 
-function outPatternList(todoList) {
-  for (var key in todoList) {
+let outPatternList = (todoList) => {
+  for (key in todoList) {
     out = todoList[key].todo;
     patternList(out);
   }
 }
 
-function chekDoneTodo(todoList) {
-  var c = 0;
-  for (var i = 0; i < todoList.length; i++) {
-    if (todoList[i].check === true) {
-      c++;
-    }
-  }
+let checkDoneTodo = (todoList) => {
+  c = 0;
+  c = (todoList.filter(todoList => todoList.check === true)).length;
   footer.querySelector(".strong").innerHTML = (todoList.length - c) + ' item left';
-
   return todoList.length - c;
 }
 
-function createNewdStorage(check, name) {
-  var tmp = {};
-  var compl = [];
+let createNewStorage = (check, name) => {
+  tmp = {};
+  completed = [];
+  c = 0;
 
-  for (let btnKey = 0; btnKey < todoList.length;) {
-    if (todoList[btnKey].check === check) {
-      tmp = todoList[btnKey];
-      compl[compl.length] = tmp;
-      btnKey++;
-    } else {
-      btnKey++;
+  todoList.forEach((value) => {
+    if (value.check === check) {
+      tmp = todoList[c];
+      completed[completed.length] = tmp;
+      c++;
     }
-  }
+    else { c++; }
+  })
 
-  localStorage.setItem(name, JSON.stringify(compl));
+  localStorage.setItem(name, JSON.stringify(completed));
 }
 
-function convertListLabel() {
-  var label = ul.querySelectorAll("label");
+let convertListLabel = () => {
+  label = ul.querySelectorAll("label");
   label = Array.prototype.slice.call(label);
   return label;
 }
 
-function convertListSpan() {
-  var span = ul.querySelectorAll("span");
+let convertListSpan = () => {
+  span = ul.querySelectorAll("span");
   span = Array.prototype.slice.call(span);
   return span;
 }
 
-function convertLi() {
-  var li = document.querySelectorAll("li");
+let convertLi = () => {
+  li = ul.querySelectorAll("li");
   li = Array.prototype.slice.call(li);
   return li;
 }
 
-function deleteLi() {
-  var li = convertLi();
-  var len = li.length;
-  for (var i = 0; i < len; i++) {
-    li.shift().remove();
-  }
+let deleteLi = () => {
+  li = convertLi();
+  todoList.forEach(() => {
+    if (li.length != 0) { li.shift().remove(); }
+  })
 }
 
-function addListMod(i) {
-  var label = convertListLabel();
-  var span = convertListSpan();
+let addListMod = (i) => {
+  label = convertListLabel();
+  span = convertListSpan();
   label.reverse();
   span.reverse();
+
   if (label[i] != undefined && span[i] != undefined) {
     label[i].classList.add("list__label_mod");
     span[i].classList.add("list__span_mod");
   }
 }
 
-function removeListMod(i) {
-  var label = convertListLabel();
-  var span = convertListSpan();
+let removeListMod = (i) => {
+  label = convertListLabel();
+  span = convertListSpan();
   label.reverse();
   span.reverse();
-  label[i].classList.remove("list__label_mod");
-  span[i].classList.remove("list__span_mod");
+
+  if (label[i] != undefined && span[i] != undefined) {
+    label[i].classList.remove("list__label_mod");
+    span[i].classList.remove("list__span_mod");
+  }
 }
 
-function selectAll() {
-
-  for (var key in todoList) {
-    if (todoList[key].check === true) {
-      c++;
-    }
-  }
-
-  if (c === todoList.length) {
-
-    for (var key in todoList) {
-      todoList[key].check = false;
-      removeListMod(key);
-    }
-    localStorage.setItem('todo', JSON.stringify(todoList));
-    footer.querySelector(".strong").innerHTML = todoList.length + " item left";
-    btn[3].style.visibility = "hidden";
-
-  } else {
-
-    for (var key in todoList) {
-      todoList[key].check = true;
-      addListMod(key);
-    }
-    localStorage.setItem('todo', JSON.stringify(todoList));
-    footer.querySelector(".strong").innerHTML = "0 item left";
-    btn[3].style.visibility = "visible";
-  }
-
-  c = 0;
-}
-
-function activeCompleted(bool, bool2, name) {
-
-  var li = convertLi();
+let activeCompleted = (bool, bool2, name) => {
+  li = convertLi();
   li = li.reverse();
 
-  for (var key in todoList) {
+  for (let key in todoList) {
     if (todoList[key]["check"] === bool) {
       li[key].remove();
     }
   }
 
   if (bool2 === true) {
-    for (var key in todoList) {
-      addListMod(key);
-    }
+    changeAllCheck(false,true);
   }
 
   workList.checkbox = function () {
 
-    createNewdStorage(bool2, name);
-    let notComStorage = JSON.parse(localStorage.getItem(name));
+    createNewStorage(bool2, name);
+    let notCompletedStorage = JSON.parse(localStorage.getItem(name));
     let todoList = JSON.parse(localStorage.getItem("todo"));
-    var li = convertLi();
+    let li = convertLi();
 
-    notComStorage.reverse();
-    todoList = todoList.reverse();
+    notCompletedStorage.reverse();
+    todoList.reverse();
 
     let inputCount = ul.querySelectorAll("input");
     inputCount = Array.prototype.slice.call(inputCount);
@@ -396,8 +284,8 @@ function activeCompleted(bool, bool2, name) {
 
     li[inputCount].remove();
 
-    for (var key in todoList) {
-      if (notComStorage[inputCount].todo === todoList[key].todo) {
+    for (let key in todoList) {
+      if (notCompletedStorage[inputCount].todo === todoList[key].todo) {
         todoList[key].check = bool;
       }
     }
@@ -407,16 +295,16 @@ function activeCompleted(bool, bool2, name) {
     todoList.reverse();
     localStorage.setItem('todo', JSON.stringify(todoList));
 
-    let countDone = notComStorage.length;
+    let countDone = notCompletedStorage.length;
     countDone--;
 
     footer.querySelector(".strong").innerHTML = countDone + ' item left';
     if (countDone === 0) { btn[3].style.visibility = "hidden"; }
   }
-
 }
 
-function choseMode(a, b, c) {
+let chooseBtnMod = (a, b, c) => {
+
   btn[a].classList.add("todoapp__btn_mod");
   btn[b].classList.remove("todoapp__btn_mod");
   btn[c].classList.remove("todoapp__btn_mod");
@@ -424,51 +312,171 @@ function choseMode(a, b, c) {
   btn[a].classList.remove("todoapp__btn_hover");
   btn[b].classList.add("todoapp__btn_hover");
   btn[c].classList.add("todoapp__btn_hover");
+
 }
 
-select_all.onclick = function () {
+let selectAll = () => {
+
+  c = (todoList.filter(todoList => todoList.check === true)).length;
+  let cloneTodList = JSON.parse(localStorage.getItem("todo"));
+
+  if (c === todoList.length) {
+
+    changeAllCheck(true, false);
+    localStorage.setItem('todo', JSON.stringify(todoList));
+    footer.querySelector(".strong").innerHTML = todoList.length + " item left";
+    btn[3].style.visibility = "hidden";
+
+  } else {
+
+    changeAllCheck(false, true);
+    localStorage.setItem('todo', JSON.stringify(todoList));
+    footer.querySelector(".strong").innerHTML = "0 item left";
+    btn[3].style.visibility = "visible";
+  }
+
+  c = 0;
+}
+
+let deleteCompletedTodo = () => {
+
+  cloneTodList = JSON.parse(localStorage.getItem("todo"));
+  cloneTodList.forEach(() => {
+    let indexCheck = todoList.findIndex(todoList => todoList.check === true);
+    if (indexCheck === -1) return;
+    todoList.splice(indexCheck, 1);
+  })
+
+  localStorage.setItem('todo', JSON.stringify(todoList));
+}
+
+let changeAllCheck = (bool1, bool2) => {
+
+  let cloneTodList = JSON.parse(localStorage.getItem("todo"));
+
+  cloneTodList.forEach(() => {
+    let indexCheck = todoList.findIndex(todoList => todoList.check === bool1);
+    if (indexCheck === -1) return;
+    todoList[indexCheck].check = bool2;
+    if (bool1 != true) { addListMod(indexCheck); }
+    else { removeListMod(indexCheck); }
+  })
+
+}
+
+document.addEventListener("keydown", enterKey);
+document.addEventListener("keydown", outNewList);
+
+class workList {
+  constructor(elem) {
+    outPatternList(todoList);
+    checkDoneTodo(todoList);
+    this._elem = elem;
+    elem.onclick = this.onClick.bind(this);
+    countDone = localStorage.getItem('countDone', countDone);
+
+    for (let key in todoList) {
+      if (todoList[key].check === true) {
+        btn[3].style.visibility = "visible";
+        addListMod(key);
+      }
+    }
+  }
+
+  checkbox() {
+    changeCheckbox();
+  }
+
+  btn() {
+    let todoList = JSON.parse(localStorage.getItem("todo"));
+    todoList.reverse();
+    let buttonCount = ul.querySelectorAll("button");
+    buttonCount = Array.prototype.slice.call(buttonCount)
+    buttonCount = buttonCount.indexOf(event.target)
+
+    let li = ul.querySelectorAll("li");
+    li[buttonCount].remove();
+
+    todoList.splice(buttonCount, 1);
+    todoList.reverse();
+    localStorage.setItem('todo', JSON.stringify(todoList));
+
+    count = checkDoneTodo(todoList);
+    footer.querySelector(".strong").innerHTML = count + ' item left';
+
+    if (todoList.length === 0) {
+      footer.style.display = "none";
+      inputSelectAll.style.display = "none";
+    }
+  }
+
+  onClick(event) {
+    let action = event.target.dataset.action;
+    if (action) {
+      this[action]();
+      todoList = JSON.parse(localStorage.getItem("todo"));
+    }
+  }
+}
+
+workList = new workList(ul);
+
+ul.ondblclick = function (event) {
+
+  todoList = JSON.parse(localStorage.getItem("todo"));
+  todoList.reverse();
+
+  label = event.target.closest("label");
+  let labelCount = ul.querySelectorAll("label");
+  labelCount = Array.prototype.slice.call(labelCount)
+  labelCount = labelCount.indexOf(event.target);
+
+  if (labelCount === -1) return;
+
+  let todo = todoList[labelCount].todo;
+  let div = event.target.closest("div");
+
+  editList(label, labelCount, todo, div);
+  console.log("qwa");
+};
+
+btnSelectAll.onclick = function () {
   selectAll();
 
 }
 
-all.onclick = function () {
+btnAll.onclick = function () {
   document.addEventListener('keydown', outNewList);
   deleteLi();
   outPatternList(todoList);
 
-  for (var i = 0; i < todoList.length; i++) {
+  for (let i = 0; i < todoList.length; i++) {
     if (todoList[i]["check"] === true) {
       addListMod(i);
     }
   }
 
-  workList.checkbox = function () { checkb(); }
+  workList.checkbox = function () { changeCheckbox(); }
 
-  select_all.onclick = function () {
+  btnSelectAll.onclick = function () {
     selectAll();
   }
-  choseMode(0, 1, 2);
+  chooseBtnMod(0, 1, 2);
 }
 
-active.onclick = function () {
+btnActive.onclick = function () {
   document.addEventListener('keydown', outNewList);
   deleteLi();
   outPatternList(todoList);
 
   activeCompleted(true, false, "not-completed")
 
-  select_all.onclick = function () {
-    
-    for (var key in todoList) {
-      if (todoList[key].check === true) {
-        c++;
-      }
-    }
+  btnSelectAll.onclick = function () {
+
+    c = (todoList.filter(todoList => todoList.check === true)).length;
 
     if (c === todoList.length) {
-      for (var key in todoList) {
-        todoList[key].check = false;
-      }
+      changeAllCheck(true,false);
       outPatternList(todoList);
       localStorage.setItem('todo', JSON.stringify(todoList));
 
@@ -477,10 +485,7 @@ active.onclick = function () {
 
     } else {
 
-      for (var key in todoList) {
-        todoList[key].check = true;
-      }
-
+      changeAllCheck(false,true);
       deleteLi();
       localStorage.setItem('todo', JSON.stringify(todoList));
 
@@ -490,10 +495,10 @@ active.onclick = function () {
     c = 0;
 
   }
-  choseMode(1, 0, 2);
+  chooseBtnMod(1, 0, 2);
 }
 
-completed.onclick = function () {
+btnCompleted.onclick = function () {
   document.removeEventListener('keydown', outNewList);
 
   deleteLi();
@@ -501,75 +506,46 @@ completed.onclick = function () {
 
   activeCompleted(false, true, "completed");
 
-  select_all.onclick = function () {
+  btnSelectAll.onclick = function () {
 
-    for (var key in todoList) {
-      if (todoList[key].check === true) {
-        c++;
-      }
-    }
+    c = (todoList.filter(todoList => todoList.check === true)).length;
 
     if (c === todoList.length) {
-      for (var key in todoList) {
-        todoList[key].check = false;
-      }
       deleteLi();
+      changeAllCheck(true, false);
       localStorage.setItem('todo', JSON.stringify(todoList));
-
       footer.querySelector(".strong").innerHTML = todoList.length + " item left";
       btn[3].style.visibility = "hidden";
 
     } else {
       deleteLi();
       outPatternList(todoList);
-      for (var key in todoList) {
-        todoList[key].check = true;
-        addListMod(key);
-      }
+      changeAllCheck(false, true);
       localStorage.setItem('todo', JSON.stringify(todoList));
-
       footer.querySelector(".strong").innerHTML = "0 item left";
       btn[3].style.visibility = "visible";
     }
     c = 0;
   }
 
-  clear_completed.onclick = function () {
-
-    var lenTodoList = todoList.length;
-
-    for (var i = 0; i < lenTodoList; i++) {
-      if (todoList[(lenTodoList - 1) - i].check === true) {
-        todoList.splice((lenTodoList - 1) - i, 1);
-      }
-    }
-    localStorage.setItem('todo', JSON.stringify(todoList));
+  btnClerCompleted.onclick = function () {
     deleteLi();
+    deleteCompletedTodo();
+
     btn[3].style.visibility = "hidden";
 
   }
-  choseMode(2, 1, 0);
+  chooseBtnMod(2, 1, 0);
 }
 
-clear_completed.onclick = function () {
-
-  var lenTodoList = todoList.length;
-  var li = convertLi();
-
-  for (var i = 0; i < lenTodoList; i++) {
-    if (todoList[(lenTodoList - 1) - i].check === true) {
-      todoList.splice((lenTodoList - 1) - i, 1);
-      if (li[i] != undefined) {
-        li[i].remove();
-      }
-    }
-  }
-  localStorage.setItem('todo', JSON.stringify(todoList));
+btnClerCompleted.onclick = function () {
+  deleteLi();
+  deleteCompletedTodo();
+  outPatternList(todoList);
 
   if (todoList.length === 0) {
     footer.style.display = "none";
-    innerInput.style.display = "none";
-
+    inputSelectAll.style.display = "none";
   }
 
 }
