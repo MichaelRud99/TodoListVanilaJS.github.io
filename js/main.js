@@ -254,13 +254,9 @@ let removeListMod = (i) => {
   }
 }
 
-let activeCompleted = (bool, bool2, name) => {
-  let indexCheck = todoList.map(todoList => todoList.check);
+let checkboxActiveCompleted = (bool, bool2, name) => {
   li = convertLi();
   li = li.reverse();
-
-  indexCheck.forEach((value, c) => { if (value === true) { li[c].remove(); } })
-  if (bool2 === true) { indexCheck.forEach((value, c) => { addListMod(c); }) }
 
   workList.checkbox = function () {
 
@@ -458,8 +454,10 @@ btnActive.onclick = function () {
   document.addEventListener('keydown', outNewList);
   deleteLi();
   outPatternList(todoList);
+  checkboxActiveCompleted(true, false, "not-completed")
 
-  activeCompleted(true, false, "not-completed")
+  let indexCheck = todoList.map(todoList => todoList.check);
+  indexCheck.forEach((value, c) => { if (value === true) { li[c].remove(); } })
 
   btnSelectAll.onclick = function () {
 
@@ -493,8 +491,11 @@ btnCompleted.onclick = function () {
 
   deleteLi();
   outPatternList(todoList);
+  checkboxActiveCompleted(false, true, "completed");
 
-  activeCompleted(false, true, "completed");
+  let indexCheck = todoList.map(todoList => todoList.check);
+  indexCheck.forEach((value, c) => { if (value === false) { li[c].remove(); } })
+  indexCheck.forEach((value, c) => { addListMod(c); })
 
   btnSelectAll.onclick = function () {
 
