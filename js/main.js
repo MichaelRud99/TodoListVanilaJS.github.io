@@ -453,11 +453,10 @@ btnAll.onclick = function () {
 btnActive.onclick = function () {
   document.addEventListener('keydown', outNewList);
   deleteLi();
-  outPatternList(todoList);
-  checkboxActiveCompleted(true, false, "not-completed")
+  checkboxActiveCompleted(true, false, "not-completed");
 
-  let indexCheck = todoList.map(todoList => todoList.check);
-  indexCheck.forEach((value, c) => { if (value === true) { li[c].remove(); } })
+  let indexCheck = todoList.map(todoList => todoList);
+  indexCheck.forEach((todoList) => { if (todoList.check === false) { patternList(todoList.todo); } })
 
   btnSelectAll.onclick = function () {
 
@@ -487,15 +486,20 @@ btnActive.onclick = function () {
 }
 
 btnCompleted.onclick = function () {
+  c = 0;
   document.removeEventListener('keydown', outNewList);
 
   deleteLi();
-  outPatternList(todoList);
   checkboxActiveCompleted(false, true, "completed");
 
-  let indexCheck = todoList.map(todoList => todoList.check);
-  indexCheck.forEach((value, c) => { if (value === false) { li[c].remove(); } })
-  indexCheck.forEach((value, c) => { addListMod(c); })
+  let indexCheck = todoList.map(todoList => todoList);
+  indexCheck.forEach((todoList) => {
+    if (todoList.check === true) {
+      patternList(todoList.todo);
+      addListMod(c);
+      c++;
+    }
+  })
 
   btnSelectAll.onclick = function () {
 
@@ -540,3 +544,4 @@ btnClerCompleted.onclick = function () {
   }
 
 }
+
