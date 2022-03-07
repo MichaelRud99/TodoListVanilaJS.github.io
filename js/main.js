@@ -175,10 +175,10 @@ let patternList = (out) => {
 }
 
 let outPatternList = (todoList) => {
-  for (key in todoList) {
-    out = todoList[key].todo;
-    patternList(out);
-  }
+  let indexTodo = todoList.map(todoList => todoList.todo);
+  indexTodo.forEach((value, c) => {
+    patternList(value);
+  })
 }
 
 let checkDoneTodo = (todoList) => {
@@ -255,18 +255,12 @@ let removeListMod = (i) => {
 }
 
 let activeCompleted = (bool, bool2, name) => {
+  let indexCheck = todoList.map(todoList => todoList.check);
   li = convertLi();
   li = li.reverse();
 
-  for (let key in todoList) {
-    if (todoList[key]["check"] === bool) {
-      li[key].remove();
-    }
-  }
-
-  if (bool2 === true) {
-    changeAllCheck(false,true);
-  }
+  indexCheck.forEach((value, c) => { if (value === true) { li[c].remove(); } })
+  if (bool2 === true) { indexCheck.forEach((value, c) => { addListMod(c); }) }
 
   workList.checkbox = function () {
 
@@ -284,11 +278,12 @@ let activeCompleted = (bool, bool2, name) => {
 
     li[inputCount].remove();
 
-    for (let key in todoList) {
-      if (notCompletedStorage[inputCount].todo === todoList[key].todo) {
-        todoList[key].check = bool;
+    let indexTodo = todoList.map(todoList => todoList.todo);
+    indexTodo.forEach((value, c) => {
+      if (notCompletedStorage[inputCount].todo === value) {
+        todoList[c].check = bool;
       }
-    }
+    })
 
     btn[3].style.visibility = "visible";
 
@@ -318,7 +313,6 @@ let chooseBtnMod = (a, b, c) => {
 let selectAll = () => {
 
   c = (todoList.filter(todoList => todoList.check === true)).length;
-  let cloneTodList = JSON.parse(localStorage.getItem("todo"));
 
   if (c === todoList.length) {
 
@@ -351,17 +345,12 @@ let deleteCompletedTodo = () => {
 }
 
 let changeAllCheck = (bool1, bool2) => {
-
-  let cloneTodList = JSON.parse(localStorage.getItem("todo"));
-
-  cloneTodList.forEach(() => {
-    let indexCheck = todoList.findIndex(todoList => todoList.check === bool1);
-    if (indexCheck === -1) return;
-    todoList[indexCheck].check = bool2;
-    if (bool1 != true) { addListMod(indexCheck); }
-    else { removeListMod(indexCheck); }
+  let indexCheck = todoList.map(todoList => todoList.check);
+  indexCheck.forEach((value, c) => {
+    todoList[c].check = bool2;
+    if (bool1 != true) { addListMod(c); }
+    else { removeListMod(c); }
   })
-
 }
 
 document.addEventListener("keydown", enterKey);
@@ -375,12 +364,14 @@ class workList {
     elem.onclick = this.onClick.bind(this);
     countDone = localStorage.getItem('countDone', countDone);
 
-    for (let key in todoList) {
-      if (todoList[key].check === true) {
+    let indexCheck = todoList.map(todoList => todoList.check);
+    indexCheck.forEach((value, c) => {
+      if (value === true) {
         btn[3].style.visibility = "visible";
-        addListMod(key);
+        addListMod(c);
       }
-    }
+    })
+
   }
 
   checkbox() {
@@ -450,12 +441,11 @@ btnAll.onclick = function () {
   deleteLi();
   outPatternList(todoList);
 
-  for (let i = 0; i < todoList.length; i++) {
-    if (todoList[i]["check"] === true) {
-      addListMod(i);
-    }
-  }
+  let indexCheck = todoList.map(todoList => todoList.check);
+  indexCheck.forEach((value, c) => {
+    if (value === true) { addListMod(c); }
 
+  })
   workList.checkbox = function () { changeCheckbox(); }
 
   btnSelectAll.onclick = function () {
@@ -476,7 +466,7 @@ btnActive.onclick = function () {
     c = (todoList.filter(todoList => todoList.check === true)).length;
 
     if (c === todoList.length) {
-      changeAllCheck(true,false);
+      changeAllCheck(true, false);
       outPatternList(todoList);
       localStorage.setItem('todo', JSON.stringify(todoList));
 
@@ -485,7 +475,7 @@ btnActive.onclick = function () {
 
     } else {
 
-      changeAllCheck(false,true);
+      changeAllCheck(false, true);
       deleteLi();
       localStorage.setItem('todo', JSON.stringify(todoList));
 
