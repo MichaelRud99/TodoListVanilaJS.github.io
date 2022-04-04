@@ -74,6 +74,7 @@ let editList = (label, labelCount, todo, div) => {
   inputField.value = todo;
   li[labelCount].appendChild(inputField).focus();
 
+
   document.removeEventListener('keydown', enterKey);
   document.removeEventListener("keydown", outNewList);
   document.addEventListener("keydown", () => editKeyCode(inputField, label, labelCount, div, event), { once: true });
@@ -380,17 +381,13 @@ class workList {
     let buttonCount = ul.querySelectorAll("button");
     buttonCount = Array.prototype.slice.call(buttonCount)
     buttonCount = buttonCount.indexOf(event.target)
-
     let li = ul.querySelectorAll("li");
     li[buttonCount].remove();
-
     todoList.splice(buttonCount, 1);
     todoList.reverse();
     localStorage.setItem('todo', JSON.stringify(todoList));
-
     count = checkDoneTodo(todoList);
     footer.querySelector(".strong").innerHTML = count + ' item left';
-
     if (todoList.length === 0) {
       footer.style.display = "none";
       inputSelectAll.style.display = "none";
